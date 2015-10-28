@@ -1,0 +1,7 @@
+Dear Publishers,
+
+There were no new items created between {0} and {1} in Digital Collections.
+
+Regards,
+
+The Digital Collections Team

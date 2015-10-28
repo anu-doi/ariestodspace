@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com.xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd" version="2.0">
+	<persistence-unit name="aries">
+		<!-- <provider>org.hibernate.ejb.HibernatePersistence</provider> -->
+		<provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+		<class>au.edu.anu.ariestodspace.aries.ResearchOutputsData1</class>
+		<class>au.edu.anu.ariestodspace.aries.ResearchOutputsDataAuthors</class>
+		<class>au.edu.anu.ariestodspace.aries.ResearchOutputsDataAuthorsDepartments</class>
+		<class>au.edu.anu.ariestodspace.aries.ResearchOutputsBooks</class>
+		<class>au.edu.anu.ariestodspace.aries.ResearchOutputsJournals</class>
+		<class>au.edu.anu.ariestodspace.aries.ResearchOutputsConferences</class>
+		<class>au.edu.anu.ariestodspace.aries.ResearchOutputsJournalsPublishers</class>
+		<class>au.edu.anu.ariestodspace.aries.ResearchOutputsNotes</class>
+		<class>au.edu.anu.ariestodspace.aries.ResearchOutputsDataDocuments</class>
+		
+		<class>au.edu.anu.ariestodspace.aries.Colleges</class>
+		<class>au.edu.anu.ariestodspace.aries.Departments</class>
+		<class>au.edu.anu.ariestodspace.aries.ExternalUsers</class>
+		<class>au.edu.anu.ariestodspace.aries.FacultySchoolCentre</class>
+		<class>au.edu.anu.ariestodspace.aries.Institutions</class>
+		<class>au.edu.anu.ariestodspace.aries.UserAccounts</class>
+		<class>au.edu.anu.ariestodspace.aries.ExternalAuthor</class>
+		<class>au.edu.anu.ariestodspace.aries.InternalAuthor</class>
+		<class>au.edu.anu.ariestodspace.aries.ForCodes</class>
+		<class>au.edu.anu.ariestodspace.aries.SeoCodes</class>
+		
+		<class>au.edu.anu.ariestodspace.aries.outputs.Book</class>
+		<class>au.edu.anu.ariestodspace.aries.outputs.BookChapter</class>
+		<class>au.edu.anu.ariestodspace.aries.outputs.ConferencePaper</class>
+		<class>au.edu.anu.ariestodspace.aries.outputs.IgnoreOutput</class>
+		<class>au.edu.anu.ariestodspace.aries.outputs.JournalArticle</class>
+		<class>au.edu.anu.ariestodspace.aries.outputs.LegalCase</class>
+		<class>au.edu.anu.ariestodspace.aries.outputs.MapObject</class>
+		<class>au.edu.anu.ariestodspace.aries.outputs.NewspaperMagazine</class>
+		<class>au.edu.anu.ariestodspace.aries.outputs.Other</class>
+		<class>au.edu.anu.ariestodspace.aries.outputs.ReferenceWorks</class>
+		<class>au.edu.anu.ariestodspace.aries.outputs.Report</class>
+		<class>au.edu.anu.ariestodspace.aries.outputs.Software</class>
+		<class>au.edu.anu.ariestodspace.aries.outputs.Translation</class>
+		<class>au.edu.anu.ariestodspace.aries.outputs.XAudioVisual</class>
+		
+		<class>au.edu.anu.ariestodspace.aries.outputs.curated.Curated</class>
+		<class>au.edu.anu.ariestodspace.aries.outputs.curated.Exhibition</class>
+		<class>au.edu.anu.ariestodspace.aries.outputs.curated.Festival</class>
+		<class>au.edu.anu.ariestodspace.aries.outputs.curated.OtherCuratedEvent</class>
+		<class>au.edu.anu.ariestodspace.aries.outputs.curated.WebExhibition</class>
+		
+		<class>au.edu.anu.ariestodspace.aries.outputs.liveperformance.LivePerformance</class>
+		<class>au.edu.anu.ariestodspace.aries.outputs.liveperformance.Music</class>
+		
+		<class>au.edu.anu.ariestodspace.aries.outputs.originalwork.DesignArchitectural</class>
+		<class>au.edu.anu.ariestodspace.aries.outputs.originalwork.OriginalWork</class>
+		<class>au.edu.anu.ariestodspace.aries.outputs.originalwork.OtherCreativeWork</class>
+		<class>au.edu.anu.ariestodspace.aries.outputs.originalwork.TextualWork</class>
+		<class>au.edu.anu.ariestodspace.aries.outputs.originalwork.VisualArtwork</class>
+		
+		<class>au.edu.anu.ariestodspace.aries.outputs.patent.GrantedPatent</class>
+		<class>au.edu.anu.ariestodspace.aries.outputs.patent.HERDC2001Patent</class>
+		<class>au.edu.anu.ariestodspace.aries.outputs.patent.Invention</class>
+		<class>au.edu.anu.ariestodspace.aries.outputs.patent.NHMRCGuildeline</class>
+		<class>au.edu.anu.ariestodspace.aries.outputs.patent.PlantBreedersRights</class>
+		<class>au.edu.anu.ariestodspace.aries.outputs.patent.ProvisionalPatent</class>
+		<class>au.edu.anu.ariestodspace.aries.outputs.patent.RegisteredDesign</class>
+		
+		<class>au.edu.anu.ariestodspace.aries.outputs.recorded.DigitalCreativeWork</class>
+		<class>au.edu.anu.ariestodspace.aries.outputs.recorded.Film</class>
+		<class>au.edu.anu.ariestodspace.aries.outputs.recorded.InterArtsAndOther</class>
+		<class>au.edu.anu.ariestodspace.aries.outputs.recorded.Recorded</class>
+		<class>au.edu.anu.ariestodspace.aries.outputs.recorded.RecordedPerformance</class>
+		<class>au.edu.anu.ariestodspace.aries.outputs.recorded.Website</class>
+		
+		<class>au.edu.anu.ariestodspace.aries.notes.CopyrightInformation</class>
+		<class>au.edu.anu.ariestodspace.aries.notes.EmbargoLiftedDate</class>
+		<class>au.edu.anu.ariestodspace.aries.notes.Keywords</class>
+		<class>au.edu.anu.ariestodspace.aries.notes.ResearchGrantFunding</class>
+		<class>au.edu.anu.ariestodspace.aries.notes.OtherNotes</class>
+		
+		<class>au.edu.anu.ariestodspace.aries.documents.ANURepositoryLink</class>
+		<class>au.edu.anu.ariestodspace.aries.documents.FundingLink</class>
+		
+		<properties>
+			<property name="hibernate.connection.driver_class" value="org.hsqldb.jdbcDriver" />
+			<property name="hibernate.connection.url" value="jdbc:hsqldb:mem:ariesdb;sql.syntax_mys=true" />
+			<property name="hibernate.connection.user" value="sa" />
+			<property name="hibernate.connection.password" value="" />
+			<property name="show_sql" value="true" />
+			<property name="dialect" value="HSQLDialect" />
+			<property name="hibernate.connection.shutdown" value="true" />
+			<property name="hibernate.hbm2ddl.auto" value="create-drop" />
+			<property name="hibernate.hbm2ddl.import_files" value="/sql/aries-import.sql" />
+		</properties>
+	</persistence-unit>
+</persistence>

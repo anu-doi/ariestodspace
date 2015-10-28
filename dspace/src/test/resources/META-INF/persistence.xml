@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com.xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd" version="2.0">
+	<persistence-unit name="dspace">
+		<!-- <provider>org.hibernate.ejb.HibernatePersistence</provider> -->
+		<provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+		<class>au.edu.anu.ariestodspace.dspace.data.Item</class>
+		<class>au.edu.anu.ariestodspace.dspace.data.MetadataValue</class>
+		<class>au.edu.anu.ariestodspace.dspace.data.Handle</class>
+		<class>au.edu.anu.ariestodspace.dspace.data.ItemHandle</class>
+		<class>au.edu.anu.ariestodspace.dspace.data.Collection</class>
+		<class>au.edu.anu.ariestodspace.dspace.data.CollectionHandle</class>
+		<properties>
+			<property name="hibernate.connection.driver_class" value="org.hsqldb.jdbcDriver" />
+			<property name="hibernate.connection.url" value="jdbc:hsqldb:mem:dspacedb" />
+			<property name="hibernate.connection.user" value="sa" />
+			<property name="hibernate.connection.password" value="" />
+			<property name="show_sql" value="true" />
+			<property name="dialect" value="HSQLDialect" />
+			<property name="hibernate.connection.shutdown" value="true" />
+			<property name="hibernate.hbm2ddl.auto" value="create-drop" />
+			<property name="hibernate.hbm2ddl.import_files" value="/sql/dspace-import.sql" />
+		</properties>
+	</persistence-unit>
+</persistence>
