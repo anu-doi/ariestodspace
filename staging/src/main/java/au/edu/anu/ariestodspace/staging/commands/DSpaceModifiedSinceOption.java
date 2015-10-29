@@ -58,9 +58,6 @@ public class DSpaceModifiedSinceOption extends StagingSubCommand {
 	@Option(name="-h", aliases="--help",help=true, usage="Help")
 	private boolean help = false;
 	
-//	@Option(name="-d", aliases="--date",usage="Date since last run",handler=DateOptionHandler.class)
-//	private Date modifiedSinceDate;
-
 	@Override
 	public void execute() throws StagingCommandException {
 		if (help) {
@@ -71,10 +68,6 @@ public class DSpaceModifiedSinceOption extends StagingSubCommand {
 		EntityManagerFactory stagingEmf = StagingPersistenceManager.getInstance().getEntityManagerFactory();
 		
 		EntityManager stagingEm = stagingEmf.createEntityManager();
-		
-//		EntityManagerFactory dspaceEm = DSpacePersistenceManager.getInstance().getEntityManagerFactory();
-		
-//		EntityManager em = dspaceEm.createEntityManager();
 		
 		try {
 			LastRun lastRun = stagingEm.find(LastRun.class, LAST_RUN_TYPE);
@@ -110,13 +103,6 @@ public class DSpaceModifiedSinceOption extends StagingSubCommand {
 			
 			LOGGER.info("Last run date: {}", lastRunDateStr);
 			
-////			Query query = em.createQuery("select new au.edu.anu.ariestodspace.staging.holder.ItemHolder(i.itemId, null, null, null) from Item i join i.handles h join i.metadataValues accessioned where accessioned.metadataFieldId = 11 and accessioned.textValue > :dateAccessioned");
-//			Query query = em.createQuery("select distinct new au.edu.anu.ariestodspace.staging.holder.ItemHolder(i.itemId, h.handle.handle, ariesIdentifiers.textValue, title.textValue) from Item i join i.handles h join i.metadataValues accessioned with accessioned.metadataFieldId = 11 left join i.metadataValues ariesIdentifiers with ariesIdentifiers.metadataFieldId = 110 left join i.metadataValues title with title.metadataFieldId = 64 where accessioned.textValue > :dateAccessioned and i.owningCollection.collectionId in :owningCollection");
-////			query.setParameter("dateAccessioned", "2015-04-01T00:00:00Z");
-//			query.setParameter("dateAccessioned", lastRunDateStr);
-//			query.setParameter("owningCollection", owningCollections);
-			
-//			List<ItemHolder> items = query.getResultList();
 			List<Item> lastItems = getLastModifiedSinceItems(lastRunDateStr, owningCollections);
 			if (lastRun == null) {
 				lastRun = new LastRun();

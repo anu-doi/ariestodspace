@@ -12,7 +12,6 @@ import org.slf4j.LoggerFactory;
 import au.edu.anu.ariestodspace.dspace.DSpacePersistenceManager;
 import au.edu.anu.ariestodspace.staging.data.IdentifierMapping;
 import au.edu.anu.ariestodspace.staging.data.StagingPersistenceManager;
-import au.edu.anu.ariestodspace.staging.util.StagingProperties;
 
 /**
  * Command line option to retrieve the identifier mappings from DSpace
@@ -32,8 +31,6 @@ public class LoadIdentiferMappingsOption extends StagingSubCommand {
 			CommandUtil.printUsage(CommandUtil.LOAD_IDENTIFIER, this.getClass());
 		}
 		
-		LOGGER.info("Executing LoadIdentiferMappingsOption");
-		
 		EntityManager dspaceEm = DSpacePersistenceManager.getInstance().getEntityManagerFactory().createEntityManager();
 		try {
 			StringBuilder queryString = new StringBuilder();
@@ -45,24 +42,23 @@ public class LoadIdentiferMappingsOption extends StagingSubCommand {
 			Query query = dspaceEm.createQuery(queryString.toString());
 			@SuppressWarnings("unchecked")
 			List<IdentifierMapping> mappings = query.getResultList();
-			LOGGER.info("Before persist mappings");
 			persistMappings(mappings);
-			LOGGER.info("After persist mappings");
 		}
 		finally {
 			dspaceEm.close();
 		}
-		String swordUsername = StagingProperties.getProperty("sword.username", "staging");
-		LOGGER.info("Sword Username: {}", swordUsername);
 	}
 	
+	/**
+	 * Insert/Update the identifier mappings
+	 * 
+	 * @param mappings The list of identifier mappings
+	 */
 	private void persistMappings(List<IdentifierMapping> mappings) {
-
 		EntityManager stagingEm = StagingPersistenceManager.getInstance().getEntityManagerFactory().createEntityManager();
 		try {
 			stagingEm.getTransaction().begin();
 			for (IdentifierMapping mapping : mappings) {
-//				LOGGER.info("Checking mapping: {}, {}, {}, {}", mapping.getAriesIdentifier(), mapping.getItemId(), mapping.getHandle(), mapping.getCollectionHandle());
 				Query identifierQuery = stagingEm.createQuery("SELECT im FROM IdentifierMapping im WHERE im.ariesIdentifier = :ariesIdentifier AND im.itemId = :itemId");
 				identifierQuery.setParameter("ariesIdentifier", mapping.getAriesIdentifier());
 				identifierQuery.setParameter("itemId", mapping.getItemId());
@@ -82,13 +78,11 @@ public class LoadIdentiferMappingsOption extends StagingSubCommand {
 							hasChanged = true;
 						}
 						if (hasChanged) {
-//							LOGGER.info("Update mapping: {}, {}, {}, {}", mapping.getAriesIdentifier(), mapping.getItemId(), mapping.getHandle(), mapping.getCollectionHandle());
 							stagingEm.persist(existingMapping);
 						}
 					}
 				}
 				else {
-//					LOGGER.info("Loading mapping: {}, {}, {}, {}", mapping.getAriesIdentifier(), mapping.getItemId(), mapping.getHandle(), mapping.getCollectionHandle());
 					stagingEm.persist(mapping);
 				}
 			}

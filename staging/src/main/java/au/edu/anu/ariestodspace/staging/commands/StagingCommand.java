@@ -16,9 +16,7 @@ public class StagingCommand {
 	@Argument(handler=SubCommandHandler.class, metaVar="<command> [options]", usage="Current commands are load-identifier, load-dspace, load-non-match, find-similar. Please use 'mapper <command> -h' for further information.")
 	@SubCommands({
 		@SubCommand(name=CommandUtil.LOAD_IDENTIFIER, impl=LoadIdentiferMappingsOption.class),
-//		@SubCommand(name=CommandUtil.LOAD_NON_MATCHES, impl=LoadNonMatchOption.class),
-		@SubCommand(name=CommandUtil.MIGRATE, impl=MigrateDataOption.class),
-//		@SubCommand(name=CommandUtil.FIND_SIMILAR, impl=DSpaceFindSimilarOption.class)
+		@SubCommand(name=CommandUtil.MIGRATE, impl=MigrateDataOption.class)
 	})
 	StagingSubCommand cmd;
 	

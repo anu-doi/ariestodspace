@@ -9,8 +9,6 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
-import au.edu.anu.ariestodspace.aries.annotation.DSpaceField;
-
 /**
  * Entity class for the 'Research_otuputs_data_authors' table in ARIES.
  * 
@@ -104,7 +102,7 @@ public class ResearchOutputsDataAuthors {
 	}
 
 	/**
-	 * Get the authorsn ame
+	 * Get the authors name
 	 * 
 	 * @return The name
 	 */

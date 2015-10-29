@@ -183,7 +183,6 @@ public class MigrateDataOption extends StagingSubCommand {
 				query = ariesEm.createQuery("SELECT data1 FROM ResearchOutputsData1 data1 WHERE chrCalculatePoints = 'Yes' and (chrAmendedByDateTime > :lastRunDate or chrCreatedByDateTime > :lastRunDate)");
 				query.setParameter("lastRunDate", lastRun.getRunDate());
 				
-				//TODO set last run date
 				Date newDate = new Date();
 				lastRun.setRunDate(newDate);
 				stagingEm.getTransaction().begin();
@@ -195,9 +194,6 @@ public class MigrateDataOption extends StagingSubCommand {
 				query = ariesEm.createQuery("SELECT data1 FROM ResearchOutputsData1 data1 WHERE chrCalculatePoints = 'Yes'");
 			}
 			if (query != null) {
-				//TODO remove max results
-				query.setFirstResult(50);
-				query.setMaxResults(20);
 				results = query.getResultList();
 			}
 		}
@@ -255,24 +251,13 @@ public class MigrateDataOption extends StagingSubCommand {
 			LOGGER.error("Error reading file");
 		}
 	}
-
+	
 	/**
-	 * Need to create a script that will execute such that approx 1000 records are done at once
-	 * 
-	 * 
-	 * last 6 count = 1477
-	 * last 5 count = 2046
-	 * last 4 count = 2406
-	 * last 3 count = 4853
-	 * last 2 count = 13236
-	 */
-	/**
-	 * process recoreds by the counter
+	 * process records by the counter
 	 */
 	@SuppressWarnings("unchecked")
 	private void processByCounter() {
-		LOGGER.info("Process by counter");
-		LOGGER.info("Start: {}, End: {}", counterStart, counterEnd);
+		LOGGER.info("Process by counter.  The records with a chrOutput6CodeCounter between {} and {} will be processed", counterStart, counterEnd);
 		List<ResearchOutputsData1> results = new ArrayList<ResearchOutputsData1>();
 		EntityManager em = ARIESPersistenceManager.getInstance().getEntityManagerFactory().createEntityManager();
 		try {
@@ -321,8 +306,7 @@ public class MigrateDataOption extends StagingSubCommand {
 				LOGGER.error("Error parsing aries data", e);
 			}
 		}
-
-		//TODO renable
+		
 		String serverUrl = StagingProperties.getProperty("sword.server", "staging");
 		String username = StagingProperties.getProperty("sword.username", "staging");
 		String password = StagingProperties.getProperty("sword.password", "staging");
@@ -342,6 +326,15 @@ public class MigrateDataOption extends StagingSubCommand {
 		postProcessSword(dataProvider);
 	}
 	
+	/**
+	 * Process the records and send them to DSpace
+	 * 
+	 * @param dataProvider The sword data provider
+	 * @param data1 The aries record
+	 * @throws IllegalAccessException
+	 * @throws InvocationTargetException
+	 * @throws IOException
+	 */
 	private void processSendRecord(SwordRequestDataProvider dataProvider, ResearchOutputsData1 data1) throws IllegalAccessException, InvocationTargetException, IOException {
 		ARIESParser parser = new ARIESParser();
 		Set<String> duplicates = getDuplicateAriesIdentifiers(data1.getChrOutput6Code());
@@ -439,15 +432,18 @@ public class MigrateDataOption extends StagingSubCommand {
 				dataProvider.getSwordRequests().add(data);
 			}
 			else {
-				//TODO re-enable bitstreams
-//				Set<BitstreamInfo> bitstreams = getBitstreams(data1);
-//				SwordRequestData data = new SwordRequestData(collectionName, mapToSend, bitstreams, false);
-				SwordRequestData data = new SwordRequestData(collectionName, mapToSend, null, false);
+				Set<BitstreamInfo> bitstreams = getBitstreams(data1);
+				SwordRequestData data = new SwordRequestData(collectionName, mapToSend, bitstreams, false);
 				dataProvider.getSwordRequests().add(data);
 			}
 		}
 	}
 	
+	/**
+	 * Process the records after they have been sent to DSpace via SWoRD. (i.e. save the newly created ids to a file)
+	 * 
+	 * @param dataProvider The data provider that was used to submit items via sword
+	 */
 	private void postProcessSword(SwordRequestDataProvider dataProvider) {
 		Date date = new Date();
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
@@ -501,12 +497,24 @@ public class MigrateDataOption extends StagingSubCommand {
 		}
 	}
 	
+	/**
+	 * Add a list of values to the data set
+	 * 
+	 * @param data The data set
+	 * @param values The values to put in the set
+	 */
 	private void addData(Set<String> data, List<String> values) {
 		for (String value : values) {
 			addData(data, value);
 		}
 	}
 	
+	/**
+	 * Add a single value to the data set.  Thsi will also strip the html tags.
+	 * 
+	 * @param data The data set
+	 * @param value The value to put in the set
+	 */
 	private void addData(Set<String> data, String value) {
 		if (value != null) {
 			value = value.trim();
@@ -517,6 +525,14 @@ public class MigrateDataOption extends StagingSubCommand {
 		}
 	}
 	
+	/**
+	 * Get the item associated with the aries record
+	 * 
+	 * 
+	 * @param data1 The aries record
+	 * @param duplicates The a list of duplicate records
+	 * @return The item
+	 */
 	@SuppressWarnings("unchecked")
 	private Item getItem(ResearchOutputsData1 data1, Set<String> duplicates) {
 		EntityManager stagingEm = StagingPersistenceManager.getInstance().getEntityManagerFactory().createEntityManager();
@@ -600,10 +616,13 @@ public class MigrateDataOption extends StagingSubCommand {
 		}
 	}
 	
+	/**
+	 * Set the first email
+	 * 
+	 * @param data1 The aries record
+	 * @param authorEmails The list of author emails
+	 */
 	private void setFirstAuthorEmail(ResearchOutputsData1 data1, List<String> authorEmails) {
-//		if (authorEmails.size() == 0) {
-//			return;
-//		}
 		List<ResearchOutputsDataAuthors> authors = data1.getAuthors();
 		
 		List<String> authorUids = new ArrayList<String>();
@@ -643,6 +662,12 @@ public class MigrateDataOption extends StagingSubCommand {
 		authorEmails.add(0, firstEmail);
 	}
 	
+	/**
+	 * Check if there is a current ANU user associated with an ARIES record
+	 * 
+	 * @param data1 The aries record
+	 * @return True if there is a current ANU User
+	 */
 	private boolean checkIfHasCurrentANUUser(ResearchOutputsData1 data1) {
 		List<ResearchOutputsDataAuthors> authors = data1.getAuthors();
 		
@@ -673,6 +698,12 @@ public class MigrateDataOption extends StagingSubCommand {
 		return false;
 	}
 	
+	/**
+	 * Check if the identifier is associated with the primary record
+	 * 
+	 * @param ariesIdentifier The aries identifier
+	 * @return Indicates if it should proceed
+	 */
 	private boolean checkIfShouldProceedIfDuplicate(String ariesIdentifier) {
 		EntityManager em = StagingPersistenceManager.getInstance().getEntityManagerFactory().createEntityManager();
 		try {
@@ -701,6 +732,12 @@ public class MigrateDataOption extends StagingSubCommand {
 		return true;
 	}
 	
+	/**
+	 * Get the list of duplicate identifiers
+	 * 
+	 * @param ariesIdentifier THe aries identifier to find duplicates for
+	 * @return The list of duplicates
+	 */
 	private Set<String> getDuplicateAriesIdentifiers(String ariesIdentifier) {
 		EntityManager em = StagingPersistenceManager.getInstance().getEntityManagerFactory().createEntityManager();
 		try {
@@ -729,6 +766,12 @@ public class MigrateDataOption extends StagingSubCommand {
 		return null;
 	}
 	
+	/**
+	 * Get the files to send associated with the record
+	 * 
+	 * @param data1 The aries record
+	 * @return The list of bitstreams
+	 */
 	private Set<BitstreamInfo> getBitstreams(ResearchOutputsData1 data1) {
 		Set<BitstreamInfo> bitstreams = new LinkedHashSet<BitstreamInfo>();
 		

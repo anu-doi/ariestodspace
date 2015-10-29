@@ -24,6 +24,7 @@ public class IdentifierMappingTest {
 		DSpacePersistenceManager.getInstance().closeEntityManagerFactory();
 	}
 	
+//	@Ignore
 	@Test
 	public void test() {
 		LoadIdentiferMappingsOption option = new LoadIdentiferMappingsOption();

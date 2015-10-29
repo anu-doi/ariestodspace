@@ -30,6 +30,7 @@ import au.edu.anu.ariestodspace.aries.ResearchOutputsJournals;
 import au.edu.anu.ariestodspace.aries.ResearchOutputsJournalsPublishers;
 import au.edu.anu.ariestodspace.aries.ResearchOutputsNotes;
 import au.edu.anu.ariestodspace.aries.SeoCodes;
+import au.edu.anu.ariestodspace.aries.annotation.ARIESParser;
 import au.edu.anu.ariestodspace.aries.documents.ANURepositoryLink;
 import au.edu.anu.ariestodspace.aries.notes.CopyrightInformation;
 import au.edu.anu.ariestodspace.aries.notes.Keywords;
@@ -50,7 +51,6 @@ public class ARIESParserTest {
 		ARIESPersistenceManager.getInstance().closeEntityManagerFactory();
 	}
 	
-	//@Ignore
 	@Test
 	public void testResearchOutput() {
 		EntityManager em = emf.createEntityManager();
@@ -85,8 +85,6 @@ public class ARIESParserTest {
 		assertNotNull("No value for FOR Code 1", forcode3);
 		assertEquals("Unexpected For Code 3 value", "040106 - Cloud Physics", forcode3.getValue());
 		
-//		assertEquals("Unexpected field of research code 2", "030303", journalArticle.getChrFORcode2());
-//		assertEquals("Unexpected field of research code 3", "040106", journalArticle.getChrFORcode3());
 		assertEquals("Unexpected issue number", "21", journalArticle.getChrIssue());
 		assertEquals("Unexpected output 1 code", "RO2", journalArticle.getChrOutput1Code());
 		assertEquals("Unexpected output 2 code", "RL2", journalArticle.getChrOutput2Code());
@@ -94,8 +92,6 @@ public class ARIESParserTest {
 		assertEquals("Unepxected publication title", "Test Journal Title", journalArticle.getChrPublicationTitle());
 		assertEquals("Unepxected reporting (publication) year", "2013", journalArticle.getChrReportingYear());
 		assertEquals("Unexpected scopus id", "1111111112", journalArticle.getChrScopusID());
-//		assertEquals("Unexpected Socio-Economic Objective 1","861503", journalArticle.getChrSEOncode1());
-//		assertEquals("Unexpected Socio-Economic Objective 2", "970102", journalArticle.getChrSEOncode2());
 		
 		SeoCodes seocodes1 = journalArticle.getChrSEOncode1();
 		assertNotNull("No value for SEO Code 1", seocodes1);
@@ -136,7 +132,7 @@ public class ARIESParserTest {
 		}
 		assertEquals("Unexpected output notes code for copyright notes","u1111111xPUB2/1", copyrightNotes.getChrOutputsNotesCode());
 		assertEquals("Unexpected output notes counter for copyright notes", new Integer(1), copyrightNotes.getIntOutputNotesCounter());
-		assertEquals("Unexpected notes type for copyright notes", new Integer(3), copyrightNotes.getIntNotesType());
+		assertEquals("Unexpected notes type for copyright notes", new Integer(5), copyrightNotes.getIntNotesType());
 		assertEquals("Unexpected notes value for copyright notes", "Copyright Elsevier", copyrightNotes.getChrNotes());
 		ResearchOutputsNotes keywordsNotes = journalArticle.getNotes().get(1);
 		if (!(keywordsNotes instanceof Keywords)) {
@@ -144,7 +140,7 @@ public class ARIESParserTest {
 		}
 		assertEquals("Unexpected output notes code for keywords notes","u1111111xPUB2/2", keywordsNotes.getChrOutputsNotesCode());
 		assertEquals("Unexpected output notes counter for keywords notes", new Integer(2), keywordsNotes.getIntOutputNotesCounter());
-		assertEquals("Unexpected notes type for keywords notes", new Integer(5), keywordsNotes.getIntNotesType());
+		assertEquals("Unexpected notes type for keywords notes", new Integer(4), keywordsNotes.getIntNotesType());
 		assertEquals("Unexpected notes value for keywords notes", "Testing", keywordsNotes.getChrNotes());
 		
 		List<ResearchOutputsDataDocuments> documents = journalArticle.getDocuments();
@@ -172,7 +168,7 @@ public class ARIESParserTest {
 		ExternalAuthor author1 = (ExternalAuthor) firstAuthor;
 		assertEquals("Unexpected author name","Body, Some",author1.getName());
 		assertEquals("Unexpected affiliation","Body, Some, University of New South Wales",author1.getAffiliation());
-		assertEquals("Unexpected university id","E1111",author1.getUid());
+		assertNull("Unexpected university id", author1.getUid());
 		
 		ResearchOutputsDataAuthors secondAuthor = authors.get(1);
 		if (!(secondAuthor instanceof InternalAuthor)) {
@@ -196,7 +192,7 @@ public class ARIESParserTest {
 		try {
 			Map<String, List<String>> ariesMap = parser.getDSpaceValues(data1);
 			assertNotNull("ARIES Map unexpectedly null",ariesMap);
-			assertEquals("Unexpected number of elements in the map", 23, ariesMap.size());
+			assertEquals("Unexpected number of elements in the map", 25, ariesMap.size());
 			List<String> subjects = ariesMap.get("dc.subject");
 			assertNotNull("No subjects found", subjects);
 			assertEquals("Unexpected number of subjects", 1, subjects.size());
@@ -275,11 +271,9 @@ public class ARIESParserTest {
 			
 			List<String> authoruids = ariesMap.get("local.contributor.authoruid");
 			assertNotNull("No author uids found", authoruids);
-			assertEquals("Unexpected number of author uids", 4, authoruids.size());
-			assertEquals("Unexpected author uid","E1111", authoruids.get(0));
-			assertEquals("Unexpected author uid", "u1111111", authoruids.get(1));
-			assertEquals("Unexpected author uid", "E1112", authoruids.get(2));
-			assertEquals("Unexpected author uid", "u1234567", authoruids.get(3));
+			assertEquals("Unexpected number of author uids", 2, authoruids.size());
+			assertEquals("Unexpected author uid", "Turner, Genevieve, u1111111", authoruids.get(0));
+			assertEquals("Unexpected author uid", "Khanna, Rahul, u1111112", authoruids.get(1));
 			
 			List<String> issueNumbers = ariesMap.get("local.bibliographicCitation.issue");
 			assertNotNull("No issue numbers found", issueNumbers);

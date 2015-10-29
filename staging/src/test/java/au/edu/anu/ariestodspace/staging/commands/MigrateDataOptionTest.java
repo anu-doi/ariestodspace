@@ -143,6 +143,7 @@ public class MigrateDataOptionTest {
 		}
 	}
 	
+	@Ignore
 	@Test
 	public void counterTest() {
 		StagingCommand command = new StagingCommand();

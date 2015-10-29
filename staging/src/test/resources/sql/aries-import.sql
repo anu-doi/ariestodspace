@@ -42,31 +42,34 @@ insert into Research_outputs_data1(chrApplicationDescription, chrConferencePaper
 
 insert into Research_outputs_data_authors (chrOutputInvestigatorCode, chrOutput6Code, chrStaffNumber, chrRoute, chrOrder) values ('u1111111xPUB1xu1111111Internal','u1111111xPUB1','u1111111','Internal','1');
 
-insert into Research_outputs_data_authors_departments (chrOUtputDepartmentCode, chrDepartmentCode, chrOutputInvestigatorCode) values ('u1111111xPUB1xu1111111Internalx1','1','u1111111xPUB1xu1111111Internal');
+insert into Research_outputs_data_authors_departments (chrOutputDepartmentCode, chrDepartmentCode, chrOutputInvestigatorCode) values ('u1111111xPUB1xu1111111Internalx1','1','u1111111xPUB1xu1111111Internal');
 
 insert into Research_outputs_journals (intJournalCode, chrISSN, chrJournalName, intPublisherID) values (1, '1234-5678','Journal of all', 1);
 insert into Research_outputs_data1(chrApplicationDescription, chrConferencePaperRefereed, chrCreatedByCode, chrFORcode1, chrFORcode2, chrFORcode3, chrIssue, chrOutput1Code, chrOutput2Code, chrOutput6Code, chrPageNumbers, chrPublicationTitle, chrReportingYear, chrScopusID, chrSEOncode1, chrSEOncode2, chrThompsonID, chrUrlArticle, chrVolume, intJournalCode) values ('Journal abstract example','yes','u1111111','020102','030303','040106','21','RO2','RL2','u1111111xPUB2','57-59','Test Journal Title','2013','1111111112','861503','970102','9111111112','http://google.com.au','12',1)
 
 insert into Research_outputs_data_authors (chrOutputInvestigatorCode, chrOutput6Code, chrStaffNumber, chrRoute, chrOrder) values ('u1111111xPUB2xExternal','u1111111xPUB2', 'E1111','External','1');
-insert into Research_outputs_data_authors (chrOutputInvestigatorCode, chrOutput6Code, chrStaffNumber, chrRoute, chrOrder) values ('u1111111xPUB2xu1111111', 'u1111111xPUB2','u1111111','Internal','2','1');
+insert into Research_outputs_data_authors (chrOutputInvestigatorCode, chrOutput6Code, chrStaffNumber, chrRoute, chrOrder) values ('u1111111xPUB2xu1111111', 'u1111111xPUB2','u1111111','Internal','2');
 insert into Research_outputs_data_authors (chrOutputInvestigatorCode, chrOutput6Code, chrStaffNumber, chrRoute, chrOrder) values ('u1111111xPUB2xE1112','u1111111xPUB2', 'E1112','External','3');
-insert into Research_outputs_data_authors (chrOutputInvestigatorCode, chrOutput6Code, chrStaffNumber, chrRoute, chrOrder) values ('u1111111xPUB2xu1111112', 'u1111111xPUB2','u1111112','Internal','4','1');
+insert into Research_outputs_data_authors (chrOutputInvestigatorCode, chrOutput6Code, chrStaffNumber, chrRoute, chrOrder) values ('u1111111xPUB2xu1111112', 'u1111111xPUB2','u1111112','Internal','4');
 
-insert into Research_outputs_data_authors_departments (chrOUtputDepartmentCode, chrDepartmentCode, chrOutputInvestigatorCode) values ('u1111111xPUB2xu1111111x1','1','u1111111xPUB2xu1111111');
-insert into Research_outputs_data_authors_departments (chrOUtputDepartmentCode, chrDepartmentCode, chrOutputInvestigatorCode) values ('u1111111xPUB2xu1111112x2','1','u1111111xPUB2xu1111112');
+insert into Research_outputs_data_authors_departments (chrOutputDepartmentCode, chrDepartmentCode, chrOutputInvestigatorCode) values ('u1111111xPUB2xu1111111x1','1','u1111111xPUB2xu1111111');
+insert into Research_outputs_data_authors_departments (chrOutputDepartmentCode, chrDepartmentCode, chrOutputInvestigatorCode) values ('u1111111xPUB2xu1111112x2','1','u1111111xPUB2xu1111112');
 
 insert into Research_outputs_data_documents (chrOutputDocumentCode, chrOutput6Code, intOutputDocumentCounter, chrDocumentName, chrURL) values ('u1111111xPUB2xDOC1','u1111111xPUB2',1,'ANU Repository Link','http://hdl.handle.net/1885/2');
+
+insert into Research_outputs_notes (chrOutput6Code, intOutputNotesCounter, chrOutputsNotesCode, intNotesType, chrNotes) values ('u1111111xPUB2',1,'u1111111xPUB2/1',5,'Copyright Elsevier');
+insert into Research_outputs_notes (chrOutput6Code, intOutputNotesCounter, chrOutputsNotesCode, intNotesType, chrNotes) values ('u1111111xPUB2',2,'u1111111xPUB2/2',4,'Testing');
 
 insert into Research_outputs_journals(intJournalCode, chrJournalName, chrISSN, intPublisherID) values (2,'Physical Review A: Atomic, Molecular and Optical Physics','1050-2947', 3);
 
 insert into Research_outputs_data1(chrCreatedByCode,chrOutput1Code, chrOutput2Code, chrOutput6Code, chrReportingYear, chrPublicationTitle,chrSeriesTitle,chrUrlArticle,chrIssue,intJournalCode,chrVolume,chrFORcode1,chrScopusID) values ('u4169254','RO2','RL2','u4169254xPUB3','2006', 'Angular correlation in the two-electron continuum','020708-1-4','http://dx.doi.org/10.1103/PhysRevA.73.020708',2,2,'73','020201','2-s2.0-33644537369');
 
-insert into Research_outputs_data_authors (chrOutputInvestigatorCode, chrOutput6Code, chrStaffNumber, chrRoute, chrOrder) values ('u4169254xPUB3xu1111111','u4169254xPUB3','u1111111','Internal','1','1');
+insert into Research_outputs_data_authors (chrOutputInvestigatorCode, chrOutput6Code, chrStaffNumber, chrRoute, chrOrder) values ('u4169254xPUB3xu1111111','u4169254xPUB3','u1111111','Internal','1');
 insert into Research_outputs_data_authors (chrOutputInvestigatorCode, chrOutput6Code, chrStaffNumber, chrRoute, chrOrder) values ('u4169254xPUB3xE1113','u4169254xPUB3','E1113','External','2');
 
-insert into Research_outputs_data_authors_departments (chrOUtputDepartmentCode, chrDepartmentCode, chrOutputInvestigatorCode) values ('u4169254xPUB3xu1111111x1','1','u4169254xPUB3xu1111111');
+insert into Research_outputs_data_authors_departments (chrOutputDepartmentCode, chrDepartmentCode, chrOutputInvestigatorCode) values ('u4169254xPUB3xu1111111x1','1','u4169254xPUB3xu1111111');
 
-insert into Research_outputs_notes (chrOutput6Code, intOutputNotesCounter, chrOutputsNotesCode, intNotesType, chrNotes) values ('u4169254xPUB3',1,'u4169254xPUB3/1',4,'Copyright American Physical Society');
+insert into Research_outputs_notes (chrOutput6Code, intOutputNotesCounter, chrOutputsNotesCode, intNotesType, chrNotes) values ('u4169254xPUB3',1,'u4169254xPUB3/1',5,'Copyright American Physical Society');
 
 insert into Research_outputs_data_documents (chrOutputDocumentCode, chrOutput6Code, intOutputDocumentCounter, chrDocumentName, chrURL) values ('u4169254xPUB3xDOC2','u4169254xPUB3',2,'ANU Repository Link','http://hdl.handle.net/10440/1001');
 
@@ -81,19 +84,19 @@ insert into Research_outputs_data1(chrCreatedByCode,chrOutput1Code, chrOutput2Co
 
 insert into Research_outputs_data1(chrCreatedByCode,chrOutput1Code, chrOutput2Code, chrOutput6Code, chrReportingYear, chrPublicationTitle,chrUrlArticle,chrIssue,intJournalCode,chrVolume) values ('u1111111','RO2','RL2','u1111111xPUB7','2013', 'High "normal" blood glucose is associated with decreased brain volume and cognitive performance in the 60s: The PATH through life study','http://doi.org/10.1111/j.1741-6612.2012.00618.x','2',4,'32');
 
-insert into Research_outputs_data_authors (chrOutputInvestigatorCode, chrOutput6Code, chrStaffNumber, chrRoute, chrOrder) values ('u1111111xPUB7xu1111114','u1111111xPUB7','u1111114','Internal','1','1');
-insert into Research_outputs_data_authors (chrOutputInvestigatorCode, chrOutput6Code, chrStaffNumber, chrRoute, chrOrder) values ('u1111111xPUB7xE1114','u1111111xPUB7','E1114','External','2');
-insert into Research_outputs_data_authors (chrOutputInvestigatorCode, chrOutput6Code, chrStaffNumber, chrRoute, chrOrder) values ('u1111111xPUB7xu1111115','u1111111xPUB7','u1111115','Internal','3','1');
-insert into Research_outputs_data_authors (chrOutputInvestigatorCode, chrOutput6Code, chrStaffNumber, chrRoute, chrOrder) values ('u1111111xPUB7xu1111116','u1111111xPUB7','u1111116','Internal','4','1');
-insert into Research_outputs_data_authors (chrOutputInvestigatorCode, chrOutput6Code, chrStaffNumber, chrRoute, chrOrder) values ('u1111111xPUB7xu1111117','u1111111xPUB7','u1111117','Internal','5','1');
+insert into Research_outputs_data_authors (chrOutputInvestigatorCode, chrOutput6Code, chrStaffNumber, chrRoute, chrOrder) values ('u1111111xPUB7xu1111114Internal','u1111111xPUB7','u1111114','Internal','1');
+insert into Research_outputs_data_authors (chrOutputInvestigatorCode, chrOutput6Code, chrStaffNumber, chrRoute, chrOrder) values ('u1111111xPUB7xE1114External','u1111111xPUB7','E1114','External','2');
+insert into Research_outputs_data_authors (chrOutputInvestigatorCode, chrOutput6Code, chrStaffNumber, chrRoute, chrOrder) values ('u1111111xPUB7xu1111115Internal','u1111111xPUB7','u1111115','Internal','3');
+insert into Research_outputs_data_authors (chrOutputInvestigatorCode, chrOutput6Code, chrStaffNumber, chrRoute, chrOrder) values ('u1111111xPUB7xu1111116Internal','u1111111xPUB7','u1111116','Internal','4');
+insert into Research_outputs_data_authors (chrOutputInvestigatorCode, chrOutput6Code, chrStaffNumber, chrRoute, chrOrder) values ('u1111111xPUB7xu1111117Internal','u1111111xPUB7','u1111117','Internal','5');
 
 
-insert into Research_outputs_data_authors_departments (chrOUtputDepartmentCode, chrDepartmentCode, chrOutputInvestigatorCode) values ('u1111111xPUB7xu1111114Internalx1','1','u1111111xPUB7xu1111114Internal');
-insert into Research_outputs_data_authors_departments (chrOUtputDepartmentCode, chrDepartmentCode, chrOutputInvestigatorCode) values ('u1111111xPUB7xu1111115Internalx1','1','u1111111xPUB7xu1111115Internal');
-insert into Research_outputs_data_authors_departments (chrOUtputDepartmentCode, chrDepartmentCode, chrOutputInvestigatorCode) values ('u1111111xPUB7xu1111116Internalx1','1','u1111111xPUB7xu1111116Internal');
-insert into Research_outputs_data_authors_departments (chrOUtputDepartmentCode, chrDepartmentCode, chrOutputInvestigatorCode) values ('u1111111xPUB7xu1111117Internalx1','1','u1111111xPUB7xu1111117Internal');
+insert into Research_outputs_data_authors_departments (chrOutputDepartmentCode, chrDepartmentCode, chrOutputInvestigatorCode) values ('u1111111xPUB7xu1111114Internalx1','1','u1111111xPUB7xu1111114Internal');
+insert into Research_outputs_data_authors_departments (chrOutputDepartmentCode, chrDepartmentCode, chrOutputInvestigatorCode) values ('u1111111xPUB7xu1111115Internalx1','1','u1111111xPUB7xu1111115Internal');
+insert into Research_outputs_data_authors_departments (chrOutputDepartmentCode, chrDepartmentCode, chrOutputInvestigatorCode) values ('u1111111xPUB7xu1111116Internalx1','1','u1111111xPUB7xu1111116Internal');
+insert into Research_outputs_data_authors_departments (chrOutputDepartmentCode, chrDepartmentCode, chrOutputInvestigatorCode) values ('u1111111xPUB7xu1111117Internalx1','1','u1111111xPUB7xu1111117Internal');
 
 insert into Research_outputs_data1(chrApplicationDescription, chrCommissionedBy, chrCreatedByCode, chrISSN, chrOutput1Code, chrOutput2Code, chrOutput6Code, chrPageNumbers, chrPublicationPlace,chrPublicationTitle, chrReportingYear, intPublisherID) values ('Some description of the report','Australian Government','u1111111','1440-6381','RO10','RL31','u1111111xPUB8','1-80','Canberra, Australia','Test Report','2013', 4);
-insert into Research_outputs_data_authors (chrOutputInvestigatorCode, chrOutput6Code, chrStaffNumber, chrRoute, chrOrder) values ('u1111111xPUB8xu1111111','u1111111xPUB8','u1111117','Internal','5','1');
+insert into Research_outputs_data_authors (chrOutputInvestigatorCode, chrOutput6Code, chrStaffNumber, chrRoute, chrOrder) values ('u1111111xPUB8xu1111111Internal','u1111111xPUB8','u1111117','Internal','1');
 
-insert into Research_outputs_data_authors_departments (chrOUtputDepartmentCode, chrDepartmentCode, chrOutputInvestigatorCode) values ('u1111111xPUB8xu1111111Internalx1','1','u1111111xPUB8xu1111111Internal');
+insert into Research_outputs_data_authors_departments (chrOutputDepartmentCode, chrDepartmentCode, chrOutputInvestigatorCode) values ('u1111111xPUB8xu1111111Internalx1','1','u1111111xPUB8xu1111111Internal');

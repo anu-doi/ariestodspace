@@ -16,31 +16,6 @@ create table identifier_mapping (
 	, constraint uq_identifier_mapping_1 unique (item_id, aries_identifier)
 );
 
-create table not_match (
-	id	bigserial
-	, item_id	integer
-	, aries_identifier text
-	, primary key (id)
-	, constraint uq_not_match_1 unique (item_id, aries_identifier)
-);
-
-create table potential_match (
-	id	bigserial
-	, item_id	integer
-	, aries_identifier	text
-	, handle	text
-	, collection_handle	text
-	, primary key (id)
-	, constraint uq_potential_match_1 unique (item_id, aries_identifier)
-);
-
-create table potential_add (
-	item_id	integer
-	, handle	text
-	, collection_handle	text
-	, primary key (item_id)
-);
-
 create table last_run (
 	run_type	text
 	, run_date	timestamp with time zone

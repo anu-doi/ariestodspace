@@ -72,15 +72,5 @@ public class UtilTest {
 		assertEquals("Unexpected editor","Kawai, M.", editors.get(0));
 		assertEquals("Unexpected editor","Lee, J.-W.", editors.get(1));
 		assertEquals("Unexpected editor","Petri, P.-A.", editors.get(2));
-		
-		//How on earth do we deal with this...
-		//ALBUQUERQUE Maria do Carmo
-		
-		
-		// Dev environment has an isbn of '978-0-87590-476-4' in the editors field...
-		
-		//Ronald L. Jackson III and Murali Balaji
-		
-		//Peterson E, Chen LJ, Schlagenhauf P
 	}
 }

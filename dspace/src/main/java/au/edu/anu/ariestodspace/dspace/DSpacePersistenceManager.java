@@ -48,6 +48,7 @@ public class DSpacePersistenceManager {
 		if (emf != null) {
 			try {
 				emf.close();
+				emf = null;
 			}
 			catch (IllegalStateException e) {
 				//DO nothing as it is closed already
@@ -60,20 +61,6 @@ public class DSpacePersistenceManager {
 	 */
 	protected synchronized void createEntityManagerFactory() {
 		if (this.emf == null) {
-			
-//			If we want to have an external property file for this...
-//			Map<String, String> connProps = new HashMap<String, String>();
-//			
-//			String jdbcDriver = GlobalProps.getProperty("jdbc.driver");
-//			String jdbcUrl = GlobalProps.getProperty("jdbc.url");
-//			String jdbcUser = GlobalProps.getProperty("jdbc.username");
-//			String jdbcPassword = GlobalProps.getProperty("jdbc.password");
-//			
-//			connProps.put("hibernate.connection.driver_class", jdbcDriver);
-//			connProps.put("hibernate.connection.url", jdbcUrl);
-//			connProps.put("hibernate.connection.user", jdbcUser);
-//			connProps.put("hibernate.connection.password", jdbcPassword);
-			
 			this.emf = Persistence.createEntityManagerFactory("dspace");
 		}
 	}

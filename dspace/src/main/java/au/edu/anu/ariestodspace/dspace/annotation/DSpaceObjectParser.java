@@ -41,12 +41,6 @@ public class DSpaceObjectParser {
 			, IllegalAccessException {
 		List<MetadataValue> metadataValues = item.getMetadataValues();
 		
-		for (MetadataValue val : metadataValues) {
-			if (val.getMetadataFieldId().intValue() == 3) {
-				LOGGER.info("Value: {}, Place: {}", val.getTextValue(), val.getPlace());
-			}
-		}
-
 		// Order the metadata values so that they won't be reordered in the system...
 		Collections.sort(metadataValues,new Comparator<MetadataValue>() {
 			@Override

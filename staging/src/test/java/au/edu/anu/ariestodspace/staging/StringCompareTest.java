@@ -7,6 +7,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.simmetrics.StringMetric;
 import org.simmetrics.StringMetrics;
@@ -16,6 +17,7 @@ import org.slf4j.LoggerFactory;
 public class StringCompareTest {
 	Logger LOGGER = LoggerFactory.getLogger(this.getClass());
 	
+	@Ignore
 	@Test
 	public void test() {
 		InputStream is = getClass().getClassLoader().getResourceAsStream("compare.csv");

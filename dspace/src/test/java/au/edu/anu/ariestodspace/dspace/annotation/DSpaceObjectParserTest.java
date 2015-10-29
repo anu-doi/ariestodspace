@@ -12,7 +12,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 
 import org.junit.AfterClass;
-import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.slf4j.Logger;
@@ -29,14 +28,6 @@ public class DSpaceObjectParserTest {
 	
 	private static EntityManagerFactory emf;
 	
-	@BeforeClass
-	public static void before() {
-		emf = DSpacePersistenceManager.getInstance().getEntityManagerFactory();
-		if (emf == null) {
-			LOGGER.info("Entity manager factory is null");
-		}
-	}
-	
 	@AfterClass
 	public static void after() {
 		DSpacePersistenceManager.getInstance().closeEntityManagerFactory();
@@ -45,7 +36,7 @@ public class DSpaceObjectParserTest {
 //	@Ignore
 	@Test
 	public void test() {
-		EntityManager em = emf.createEntityManager();
+		EntityManager em = DSpacePersistenceManager.getInstance().getEntityManagerFactory().createEntityManager();
 		
 		Item item = em.find(Item.class, 1);
 		assertNotNull("Item is null", item);
@@ -59,11 +50,6 @@ public class DSpaceObjectParserTest {
 
 		em.close();
 		assertNotNull("Owning collection is null",item.getOwningCollection());
-//		LOGGER.info("Row: {}, {}, {}, {}, {}, {}", item.getItemId(), item.getSubmitterId(), item.getInArchive(), item.getWithdrawn(), item.getLastModified(), item.getOwningCollection().getCollectionId());
-		/*
-		for (MetadataValue metadataValue : item.getMetadataValues()) {
-			LOGGER.info("-- {}, {}, {}, {}", metadataValue.getId(), metadataValue.getMetadataFieldId(), metadataValue.getPlace(), metadataValue.getTextValue());
-		}*/
 		
 		DSpaceObjectParser parser = new DSpaceObjectParser();
 		try {
