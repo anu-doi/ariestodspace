@@ -66,7 +66,7 @@ public class MigrateDataOptionTest {
 //			parser.parseArgument(CommandUtil.MIGRATE,"-i","u4056230xPUB269");
 //			parser.parseArgument(CommandUtil.MIGRATE,"-i","f5625xPUB1113");
 
-			parser.parseArgument(CommandUtil.MIGRATE,"-i","a383154xPUB1080");
+			parser.parseArgument(CommandUtil.MIGRATE,"-i","MigratedxPub17332");
 //			parser.parseArgument(CommandUtil.MIGRATE,"-i","u4326120xPUB620");
 //			parser.parseArgument(CommandUtil.MIGRATE,"-i","MigratedxPub13204");
 //			parser.parseArgument(CommandUtil.MIGRATE,"-i","u3923986xPUB228");

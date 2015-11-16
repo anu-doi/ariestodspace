@@ -9,10 +9,11 @@ import java.nio.charset.Charset;
 import java.nio.charset.CharsetDecoder;
 import java.nio.charset.CoderResult;
 import java.nio.charset.CodingErrorAction;
-import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -20,8 +21,10 @@ import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.unbescape.html.HtmlEscape;
 
 import au.edu.anu.ariestodspace.aries.ResearchOutputsData1;
+import au.edu.anu.ariestodspace.aries.ResearchOutputsDataAuthors;
 
 /**
  * Transforms an ARIES research output into a map.
@@ -41,6 +44,15 @@ public class ARIESParser {
 	 */
 	public Map<String, List<String>> getDSpaceValues(ResearchOutputsData1 data1) throws InvocationTargetException
 			, IllegalAccessException {
+		// We want to sort the authors because people can be fussy about the order...
+		Collections.sort(data1.getAuthors(), new Comparator<ResearchOutputsDataAuthors>() {
+			@Override
+			public int compare(ResearchOutputsDataAuthors author1,
+					ResearchOutputsDataAuthors author2) {
+				return author1.getChrOrder().compareTo(author2.getChrOrder());
+			}
+		});
+		
 		Map<String, List<String>> dspaceValues = new HashMap<String, List<String>>();
 		addValues(data1, dspaceValues);
 		
@@ -63,6 +75,7 @@ public class ARIESParser {
 		for (Method method : methods) {
 			if (method.isAnnotationPresent(DSpaceField.class)) {
 				DSpaceField field = method.getAnnotation(DSpaceField.class);
+//				LOGGER.info("Method name: {}, Field value: {}", method.getName(), field.value());
 				Object getValue = method.invoke(obj);
 				if (getValue instanceof Collection) {
 					Collection<?> collection = (Collection<?>) getValue;
@@ -101,7 +114,9 @@ public class ARIESParser {
 	 * @param dspaceValues The map of values
 	 */
 	private void addSingleValue(String valueToAdd, String fieldName, Map<String, List<String>> valueMap) {
-		if (valueToAdd != null && !"".equals(valueToAdd.trim()) && !valueToAdd.toLowerCase().trim().matches("-|,|.|n/a|na|unknown")) {
+//		LOGGER.info("Add value '{}' to '{}'", valueToAdd, fieldName);
+		if (valueToAdd != null && !"".equals(valueToAdd.trim()) && !valueToAdd.toLowerCase().trim().matches("-|,|\\.|n/a|na|unknown|tba")) {
+//			LOGGER.info("Add value");
 			if (valueMap.containsKey(fieldName)) {
 				valueMap.get(fieldName).add(valueToAdd);
 			}
@@ -122,21 +137,27 @@ public class ARIESParser {
 	private String getStringValue(Object value) {
 		if (value instanceof String) {
 			String returnValue = (String) value;
-			// test if the string can be decoded by cp1252
-			boolean cp1252decode = decodeToCp1252(returnValue);
-			try {
-				// if the string can be decoded by cp1252 then do so
-				if (cp1252decode) {
-					byte[] bytes = returnValue.getBytes("cp1252");
-					returnValue = new String(bytes, StandardCharsets.UTF_8);
-				}
-				if (!returnValue.equals(value)) {
-					LOGGER.debug("Return value Before: {}, After: {}", value, returnValue);
-				}
-			}
-			catch (UnsupportedEncodingException e) {
-				LOGGER.error("Error with encoding");
-			}
+//			LOGGER.info("Value: {}", value);
+//			// test if the string can be decoded by cp1252
+//			boolean cp1252decode = false;
+////			boolean cp1252decode = decodeToCp1252(returnValue);
+//			LOGGER.info("Can decode? {}", cp1252decode);
+//			try {
+//				// if the string can be decoded by cp1252 then do so
+//				if (cp1252decode) {
+//					byte[] bytes = returnValue.getBytes("cp1252");
+//					returnValue = new String(bytes, StandardCharsets.UTF_8);
+//				}
+//				if (!returnValue.equals(value)) {
+//					LOGGER.debug("Return value Before: {}, After: {}", value, returnValue);
+//				}
+//			}
+//			catch (UnsupportedEncodingException e) {
+//				LOGGER.error("Error with encoding");
+//			}
+			// Unescape the html encoding
+			
+			returnValue = HtmlEscape.unescapeHtml(returnValue);
 			return returnValue;
 		}
 		else if (value instanceof Date) {

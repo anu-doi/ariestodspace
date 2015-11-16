@@ -20,6 +20,11 @@ public class Exhibition extends Curated {
 	private String chrVenue;
 	private Date dateFIrstPerformed;
 	private Integer intNumberOfWorksInExhibition;
+	
+	@Override
+	public String getChrReportingYear() {
+		return super.getChrReportingYear();
+	}
 
 	/**
 	 * Get the Venue, city and country of the exhibition

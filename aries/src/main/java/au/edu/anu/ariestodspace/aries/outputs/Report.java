@@ -6,10 +6,17 @@ import java.util.List;
 
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Transient;
 
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
+
 import au.edu.anu.ariestodspace.aries.ResearchOutputsData1;
+import au.edu.anu.ariestodspace.aries.ResearchOutputsJournalsPublishers;
 import au.edu.anu.ariestodspace.aries.annotation.DSpaceField;
+import au.edu.anu.ariestodspace.aries.annotation.DSpaceFieldObject;
 
 /**
  * Entity class for report outputs. Relates to the RO10 output type.
@@ -25,6 +32,7 @@ public class Report extends ResearchOutputsData1 {
 	private String chrISSN;
 	private String chrPageNumbers; // todo bibliographic citation
 	private String chrPublicationPlace;
+	private ResearchOutputsJournalsPublishers publisher;
 	private static final List<String> EXT_CATEGORIES = Collections.unmodifiableList(
 			new ArrayList<String>()
 			{
@@ -175,6 +183,28 @@ public class Report extends ResearchOutputsData1 {
 	 */
 	public void setChrPublicationPlace(String chrPublicationPlace) {
 		this.chrPublicationPlace = chrPublicationPlace;
+	}
+
+	/**
+	 * Get the publisher
+	 * 
+	 * @return THe publisher
+	 */
+	@DSpaceFieldObject
+	@ManyToOne
+	@JoinColumn(name="intPublisherID")
+	@NotFound(action=NotFoundAction.IGNORE)
+	public ResearchOutputsJournalsPublishers getPublisher() {
+		return publisher;
+	}
+
+	/**
+	 * Set the publisher
+	 * 
+	 * @param publishers The publisher
+	 */
+	public void setPublisher(ResearchOutputsJournalsPublishers publishers) {
+		this.publisher = publishers;
 	}
 	
 	@Transient

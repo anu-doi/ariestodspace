@@ -93,6 +93,8 @@ public class SwordProcessor {
 						&& (iData.getMetadata() != null && !iData.getMetadata().isEmpty())) {
 					// create a resource if collection name and title is
 					// provided
+					Set<String> ariesRecords = iData.getMetadata().get("ariespublication");
+					log.info("Uploading records {}", ariesRecords);
 					SWORDCollection collection = getCollectionNamed(sd, iData.getCollectionName());
 					Deposit metadataDeposit = createMetadataDeposit(iData.getMetadata());
 					DepositReceipt depositReceipt = depositResource(collection, metadataDeposit);
@@ -102,6 +104,8 @@ public class SwordProcessor {
 					iData.setEditMediaLink(editMediaLink);
 				} else if (iData.getEditLink() != null && (iData.getMetadata() != null && !iData.getMetadata().isEmpty())) {
 					// read resource url from command line parameters.
+					Set<String> ariesRecords = iData.getMetadata().get("ariespublication");
+					log.info("Editing records {}", ariesRecords);
 					editLink = iData.getEditLink();
 					Deposit metadataDeposit = createMetadataDeposit(iData.getMetadata());
 					replaceResource(editLink, metadataDeposit);
@@ -175,9 +179,15 @@ public class SwordProcessor {
 	
 		for (Entry<String, Set<String>> metadataEntry : metadata.entrySet()) {
 			for (String value : metadataEntry.getValue()) {
-				QName qName = createQName(metadataEntry.getKey());
-//				log.debug("QName: {}, Key: {}, Value: {}", qName, metadataEntry.getKey(), value);
-				ep.addSimpleExtension(qName, value);
+				try {
+					QName qName = createQName(metadataEntry.getKey());
+	//				log.debug("QName: {}, Key: {}, Value: {}", qName, metadataEntry.getKey(), value);
+					ep.addSimpleExtension(qName, value);
+				}
+				catch (Exception e) {
+					// There were issues in creating the qname, the record probably shouldn't be processed in this case...
+					throw new WorkflowException(e);
+				}
 			}
 		}
 		Deposit resourceDeposit = new Deposit(ep, null, null, null, null, null, null, true, false);
@@ -188,24 +198,55 @@ public class SwordProcessor {
 	private DepositReceipt depositResource(SWORDCollection collection, Deposit resource) throws WorkflowException {
 		DepositTask depTask = new DepositTask(swordClient, this.serverInfo, collection, resource);
 		DepositReceipt depositReceipt = null;
+		int maxRetries = 3;
 		try {
-			depositReceipt = depTask.call();
-			log.info("Created resource at {} with status code {}.", depositReceipt.getLocation(),
-					Integer.valueOf(depositReceipt.getStatusCode()));
-		} catch (Exception e) {
+		for (int i = 0; i < maxRetries && (depositReceipt == null || depositReceipt.getStatusCode() != 201); i++) {
+			try {
+				depositReceipt = depTask.call();
+				log.info("Created resource at {} with status code {}.", depositReceipt.getLocation(),
+						Integer.valueOf(depositReceipt.getStatusCode()));
+			} catch (Exception e) {
+				if (i < maxRetries - 1) {
+					log.error("Error creating item retrying in 5 seconds, re-try " + (i+1), e);
+					Thread.sleep(5000);
+				}
+				else {
+					throw new WorkflowException(e);
+				}
+			}
+		}
+		}
+		catch (Exception e) {
+			//Don't care if wait is interrupted ...
 			throw new WorkflowException(e);
 		}
+		
 		return depositReceipt;
 	}
 	
 	private SwordResponse replaceResource(String uri, Deposit resource) throws WorkflowException {
 		ReplaceTask replaceTask = new ReplaceTask(swordClient, this.serverInfo, uri, resource);
 		SwordResponse swordResponse = null;
+		int maxRetries = 3;
 		try {
-			swordResponse = replaceTask.call();
-			log.info("Replaced resource at {} with status code {}.", uri, swordResponse.getStatusCode());
+			for (int i = 0; i < maxRetries && (swordResponse == null || swordResponse.getStatusCode() != 200); i++) {
+				try {
+					swordResponse = replaceTask.call();
+					log.info("Replaced resource at {} with status code {}.", uri, swordResponse.getStatusCode());
+				}
+				catch (Exception e) {
+					if (i < maxRetries - 1) {
+						log.error("Error editing item via " + uri + " retrying in 5 seconds, re-try " + (i+1), e);
+						Thread.sleep(5000);
+					}
+					else {
+						throw new WorkflowException(e);
+					}
+				}
+			}
 		}
 		catch (Exception e) {
+			//Don't care if wait is interrupted ...
 			throw new WorkflowException(e);
 		}
 		return swordResponse;
@@ -233,28 +274,43 @@ public class SwordProcessor {
 					log.info("Uploading {} size={}:MD5={} [{}/{}]...", new Object[] { bitstreamInfo.getFilename(),
 							fmtSize, md5, Integer.valueOf(count), Integer.valueOf(bitstreams.size()) });
 
-					// create bitstream deposit object
-					Deposit bsDeposit = new Deposit();
-					String depositFilename = URLEncoder.encode(bitstreamInfo.getFilename(), "UTF-8");
-					log.info("Deposit file name: {}", depositFilename);
-					bsDeposit.setFilename(depositFilename);
-//					bsDeposit.setFilename(bitstreamInfo.getFilename());
-//					bsDeposit.setContentLength(bitstreamInfo.getSize());
-					bsDeposit.setInProgress(true);
-					bsDeposit.setMd5(md5);
-					String mimeType = Files.probeContentType(bitstreamInfo.getFile());
-					if (mimeType != null) {
-						bsDeposit.setMimeType(mimeType);
-					} else {
-						bsDeposit.setMimeType("application/octet-stream");
+					SwordResponse bsDepositReceipt = null;
+					int maxRetries = 3;
+					for (int i = 0; i < maxRetries && (bsDepositReceipt == null || bsDepositReceipt.getStatusCode() != 201); i++){
+						// create bitstream deposit object
+						Deposit bsDeposit = new Deposit();
+						String depositFilename = URLEncoder.encode(bitstreamInfo.getFilename(), "UTF-8");
+						log.info("Deposit file name: {}", depositFilename);
+						bsDeposit.setFilename(depositFilename);
+	//					bsDeposit.setFilename(bitstreamInfo.getFilename());
+	//					bsDeposit.setContentLength(bitstreamInfo.getSize());
+						bsDeposit.setInProgress(true);
+						bsDeposit.setMd5(md5);
+						String mimeType = Files.probeContentType(bitstreamInfo.getFile());
+						if (mimeType != null) {
+							bsDeposit.setMimeType(mimeType);
+						} else {
+							bsDeposit.setMimeType("application/octet-stream");
+						}
+						bsDeposit.setPackaging(UriRegistry.PACKAGE_BINARY);
+						bitstream = createInputStream(bitstreamInfo.getFile());
+						bsDeposit.setFile(bitstream);
+						try {
+							AddToMediaResourceTask atmrTask = new AddToMediaResourceTask(swordClient, this.serverInfo,
+									editMediaLink, bsDeposit);
+							bsDepositReceipt = atmrTask.call();
+						} 
+						catch (Exception e) {
+							if (i < maxRetries - 1) {
+								log.error("Error adding files to "+ editMediaLink +" retrying in 5 seconds, retry " + (i+1), e);
+								Thread.sleep(5000);
+							}
+							else {
+								throw(e);
+							}
+//							if ()
+						}
 					}
-					bsDeposit.setPackaging(UriRegistry.PACKAGE_BINARY);
-					bitstream = createInputStream(bitstreamInfo.getFile());
-					bsDeposit.setFile(bitstream);
-
-					AddToMediaResourceTask atmrTask = new AddToMediaResourceTask(swordClient, this.serverInfo,
-							editMediaLink, bsDeposit);
-					SwordResponse bsDepositReceipt = atmrTask.call();
 					responses.put(bitstreamInfo, bsDepositReceipt);
 					log.info("Uploaded {}. Status:{}, MD5:{}", bitstreamInfo.getFilename(),
 							Integer.valueOf(bsDepositReceipt.getStatusCode()), bsDepositReceipt.getContentMD5());

@@ -59,7 +59,6 @@ public class Translation extends ResearchOutputsData1 {
 	 * 
 	 * @return The edition
 	 */
-	@DSpaceField("dc.relation.isversionof")
 	public String getChrEdition() {
 		return chrEdition;
 	}
@@ -71,6 +70,15 @@ public class Translation extends ResearchOutputsData1 {
 	 */
 	public void setChrEdition(String chrEdition) {
 		this.chrEdition = chrEdition;
+	}
+
+	@Transient
+	@DSpaceField("dc.relation.isversionof")
+	public String getEditionText() {
+		if (chrEdition != null && chrEdition.trim().length() > 0) {
+			return chrEdition + " Edition";
+		}
+		return null;
 	}
 
 	/**
@@ -122,7 +130,7 @@ public class Translation extends ResearchOutputsData1 {
 	@Transient
 	@DSpaceField("local.description.notes")
 	public String getDescriptionNotes() {
-		if (chrComments != null && chrFellowshipDescription != null) {
+		if (chrComments != null && chrComments.trim().length() > 0 && chrFellowshipDescription != null && chrFellowshipDescription.trim().length() > 0) {
 			return "This item has been translated from " + chrComments + " to " + chrFellowshipDescription + ".";
 		}
 		return null;

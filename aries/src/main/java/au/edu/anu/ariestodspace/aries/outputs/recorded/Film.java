@@ -30,6 +30,11 @@ public class Film extends Recorded {
 	public String getType() {
 		return "Multimedia";
 	}
+	
+	@Override
+	public String getChrReportingYear() {
+		return super.getChrReportingYear();
+	}
 
 	/**
 	 * Get the catalogue number

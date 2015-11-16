@@ -9,6 +9,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
+
 import au.edu.anu.ariestodspace.aries.annotation.DSpaceField;
 import au.edu.anu.ariestodspace.aries.annotation.DSpaceFieldObject;
 import au.edu.anu.ariestodspace.aries.util.Util;
@@ -201,6 +204,7 @@ public class ResearchOutputsConferences {
 	@DSpaceFieldObject
 	@ManyToOne
 	@JoinColumn(name="intPublisherID")
+	@NotFound(action=NotFoundAction.IGNORE)
 	public ResearchOutputsJournalsPublishers getPublisher() {
 		return publisher;
 	}

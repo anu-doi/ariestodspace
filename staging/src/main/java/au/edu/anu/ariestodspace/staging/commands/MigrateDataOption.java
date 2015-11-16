@@ -38,6 +38,7 @@ import au.edu.anu.ariestodspace.aries.ResearchOutputsData1;
 import au.edu.anu.ariestodspace.aries.ResearchOutputsDataAuthors;
 import au.edu.anu.ariestodspace.aries.ResearchOutputsDataDocuments;
 import au.edu.anu.ariestodspace.aries.annotation.ARIESParser;
+import au.edu.anu.ariestodspace.aries.outputs.IgnoreOutput;
 import au.edu.anu.ariestodspace.dspace.DSpaceMapping;
 import au.edu.anu.ariestodspace.dspace.DSpacePersistenceManager;
 import au.edu.anu.ariestodspace.dspace.data.Item;
@@ -292,7 +293,10 @@ public class MigrateDataOption extends StagingSubCommand {
 		for (ResearchOutputsData1 data1 : results) {
 			try {
 				boolean sendToDSpace = true;
-				if (data1.getExternalCategories().contains(data1.getChrOutput2Code())) {
+				if (data1 instanceof IgnoreOutput) {
+					sendToDSpace = false;
+				}
+				if (sendToDSpace && data1.getExternalCategories().contains(data1.getChrOutput2Code())) {
 					sendToDSpace = checkIfHasCurrentANUUser(data1);
 					LOGGER.debug("Send external category to DSpace for {}: {}", data1.getChrOutput6Code(), sendToDSpace);
 				}
@@ -385,7 +389,7 @@ public class MigrateDataOption extends StagingSubCommand {
 						}
 						addData(setData, ariesValues);
 						mapToSend.put(mappingKey, setData);
-						LOGGER.info("Difference in value: {}", mappingKey);
+						LOGGER.debug("Differences in value {} for item {}", mappingKey, data1.getChrOutput6Code());
 						sendToDSpace = true;
 					}
 				}

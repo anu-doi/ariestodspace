@@ -35,15 +35,17 @@ import au.edu.anu.ariestodspace.aries.annotation.DSpaceFieldObject;
 @Entity
 @Table(name="Research_outputs_data1")
 @Inheritance(strategy=InheritanceType.SINGLE_TABLE)
-@DiscriminatorFormula(value="case when chrOutput1Code = 'RO1' then '01XXX' "
+@DiscriminatorFormula(value="case when chrOutput2Code = 'RL151' or chrOutput2Code = 'RL154' or chrOutput2Code = 'RL156' or chrOutput2Code = 'RL157' or chrOutput2Code = 'RL158' then 'OTHER' "
+		+ "when chrOutput1Code = 'RO1' then '01XXX' "
 		+ "when chrOutput1Code = 'RO2' then '02XXX' "
+		+ "when chrOutput1Code = 'RO3' then '03XXX' "
 		+ "when chrOutput1Code = 'RO4' then '04XXX' "
 		+ "when chrOutput1Code = 'RO5' and chrOutput2Code = 'RL37' then '05037' "
 		+ "when chrOutput1Code = 'RO5' and chrOutput2Code = 'RL78' then '05078' "
 		+ "when chrOutput1Code = 'RO5' and chrOutput2Code = 'RL30' then '05030' "
 		+ "when chrOutput1Code = 'RO5' and chrOutput2Code = 'RL130' then '05130' "
 		+ "when chrOutput1Code = 'RO5' and chrOutput2Code = 'RL131' then '05131' "
-		+ "when chrOutput1Code = 'RO5' and chrOutput2Code = 'RL131' then '05132' "
+		+ "when chrOutput1Code = 'RO5' and chrOutput2Code = 'RL132' then '05132' "
 		+ "when chrOutput1Code = 'RO6' then '06XXX' "
 		+ "when chrOutput1Code = 'RO9' then '09XXX' "
 		+ "when chrOutput1Code = 'RO10' then '10XXX' "
@@ -54,9 +56,9 @@ import au.edu.anu.ariestodspace.aries.annotation.DSpaceFieldObject;
 		+ "when chrOutput1Code = 'RO17' then '17XXX' "
 		+ "when chrOutput1Code = 'RO20' then '20XXX' "
 		+ "when chrOutput1Code = 'RO21' and (chrOutput2Code = 'RL115' or chrOutput2Code = 'RL146') then '21115' "
-		+ "when chrOutput1Code = 'RO21' and (chrOutput2Code = 'RL112' or chrOutput2Code = 'RL139') then '21115' "
-		+ "when chrOutput1Code = 'RO21' and (chrOutput2Code = 'RL113' or chrOutput2Code = 'RL140') then '21115' "
-		+ "when chrOutput1Code = 'RO21' and (chrOutput2Code = 'RL114' or chrOutput2Code = 'RL150') then '21115' "
+		+ "when chrOutput1Code = 'RO21' and (chrOutput2Code = 'RL112' or chrOutput2Code = 'RL139') then '21112' "
+		+ "when chrOutput1Code = 'RO21' and (chrOutput2Code = 'RL113' or chrOutput2Code = 'RL140') then '21113' "
+		+ "when chrOutput1Code = 'RO21' and (chrOutput2Code = 'RL114' or chrOutput2Code = 'RL150') then '21114' "
 		+ "when chrOutput1Code = 'RO22' and (chrOutput2Code = 'RL117' or chrOutput2Code = 'RL137') then '22117' "
 		+ "when chrOutput1Code = 'RO22' then '22119' "
 		+ "when chrOutput1Code = 'RO23' and (chrOutput2Code = 'RL123' or chrOutput2Code = 'RL133') then '23123' "
@@ -649,5 +651,11 @@ public class ResearchOutputsData1 {
 	@Transient
 	public List<String> getExternalCategories() {
 		return new ArrayList<String>();
+	}
+	
+	@Transient
+	@DSpaceField("local.type.status")
+	public String getLocalStatus() {
+		return "Published Version";
 	}
 }

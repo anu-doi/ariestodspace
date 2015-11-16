@@ -11,8 +11,9 @@ import org.kohsuke.args4j.CmdLineParser;
 public class CommandUtil {
 	public static final String MAPPER = "mapper";
 	public static final String LOAD_IDENTIFIER = "load-identifier";
-	public static final String LOAD_NON_MATCHES = "load-non-match";
-	public static final String FIND_SIMILAR = "find-similar";
+//	public static final String LOAD_NON_MATCHES = "load-non-match";
+//	public static final String FIND_SIMILAR = "find-similar";
+	public static final String RECENT_RECORDS = "latest-created";
 	public static final String MIGRATE = "migrate";
 
 	/**

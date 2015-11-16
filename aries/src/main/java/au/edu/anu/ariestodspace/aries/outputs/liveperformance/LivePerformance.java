@@ -4,10 +4,17 @@ import java.util.Date;
 
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Transient;
 
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
+
 import au.edu.anu.ariestodspace.aries.ResearchOutputsData1;
+import au.edu.anu.ariestodspace.aries.ResearchOutputsJournalsPublishers;
 import au.edu.anu.ariestodspace.aries.annotation.DSpaceField;
+import au.edu.anu.ariestodspace.aries.annotation.DSpaceFieldObject;
 
 /**
  * Entity class for live performances. Relates to the RL119, RL148, RL116, RL149, RL138 and RL118 publication categories.
@@ -22,6 +29,7 @@ public class LivePerformance extends ResearchOutputsData1 {
 	private String chrPublicationPlace;
 	private String chrVenue;
 	private Date dateFirstPerformed;
+	private ResearchOutputsJournalsPublishers publisher;
 	
 	/**
 	 * Get the DSpace type
@@ -32,6 +40,11 @@ public class LivePerformance extends ResearchOutputsData1 {
 	@DSpaceField("dc.type")
 	public String getType() {
 		return "Live performance";
+	}
+	
+	@Override
+	public String getChrReportingYear() {
+		return super.getChrReportingYear();
 	}
 
 	/**
@@ -108,5 +121,28 @@ public class LivePerformance extends ResearchOutputsData1 {
 	 */
 	public void setDateFirstPerformed(Date dateFirstPerformed) {
 		this.dateFirstPerformed = dateFirstPerformed;
+	}
+
+
+	/**
+	 * Get the publisher
+	 * 
+	 * @return The publisher
+	 */
+	@DSpaceFieldObject
+	@ManyToOne
+	@JoinColumn(name="intPublisherID")
+	@NotFound(action=NotFoundAction.IGNORE)
+	public ResearchOutputsJournalsPublishers getPublisher() {
+		return publisher;
+	}
+
+	/**
+	 * Set the publisher
+	 * 
+	 * @param publisher The publisher
+	 */
+	public void setPublisher(ResearchOutputsJournalsPublishers publisher) {
+		this.publisher = publisher;
 	}
 }

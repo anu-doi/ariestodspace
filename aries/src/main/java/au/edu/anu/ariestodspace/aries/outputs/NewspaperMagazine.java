@@ -1,5 +1,7 @@
 package au.edu.anu.ariestodspace.aries.outputs;
 
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
@@ -21,7 +23,12 @@ public class NewspaperMagazine extends ResearchOutputsData1 {
 	private String chrPageNumbers;
 	private String chrPublicationPlace;
 	private String chrTitleOfConferenceProceedings;
-	private String dateFirstPerformed;
+	private Date dateFirstPerformed;
+	
+	@Override
+	public String getChrReportingYear() {
+		return super.getChrReportingYear();
+	}
 	
 	/**
 	 * Get the DSpace type
@@ -139,7 +146,7 @@ public class NewspaperMagazine extends ResearchOutputsData1 {
 	 * @return THe publication date
 	 */
 	@DSpaceField("dc.date.issued")
-	public String getDateFirstPerformed() {
+	public Date getDateFirstPerformed() {
 		return dateFirstPerformed;
 	}
 
@@ -148,7 +155,7 @@ public class NewspaperMagazine extends ResearchOutputsData1 {
 	 * 
 	 * @param dateFirstPerformed The publication date
 	 */
-	public void setDateFirstPerformed(String dateFirstPerformed) {
+	public void setDateFirstPerformed(Date dateFirstPerformed) {
 		this.dateFirstPerformed = dateFirstPerformed;
 	}
 }

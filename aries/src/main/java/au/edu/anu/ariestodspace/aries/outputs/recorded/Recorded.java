@@ -3,6 +3,10 @@ package au.edu.anu.ariestodspace.aries.outputs.recorded;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Transient;
+
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
 
 import au.edu.anu.ariestodspace.aries.ResearchOutputsData1;
 import au.edu.anu.ariestodspace.aries.ResearchOutputsJournalsPublishers;
@@ -20,6 +24,17 @@ public class Recorded extends ResearchOutputsData1 {
 	private String chrExtentOfWork;
 	private String chrPublicationPlace;
 	private ResearchOutputsJournalsPublishers publisher;
+	
+	/**
+	 * Get the DSpace type
+	 * 
+	 * @return The type
+	 */
+	@Transient
+	@DSpaceField("dc.type")
+	public String getType() {
+		return "Creative work";
+	}
 	
 	/**
 	 * Get the extent of work. e.g. the duration of a video, or the number of pages, or how many people are in the work
@@ -67,6 +82,7 @@ public class Recorded extends ResearchOutputsData1 {
 	@DSpaceFieldObject
 	@ManyToOne
 	@JoinColumn(name="intPublisherID")
+	@NotFound(action=NotFoundAction.IGNORE)
 	public ResearchOutputsJournalsPublishers getPublisher() {
 		return publisher;
 	}

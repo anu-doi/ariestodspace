@@ -48,7 +48,7 @@ public class DSpaceMapping {
 			@Override
 			public int compare(MetadataValue value1, MetadataValue value2) {
 				int comparison = value1.getMetadataFieldId().compareTo(value2.getMetadataFieldId());
-				if (comparison == 0) {
+				if (comparison == 0 && value1.getPlace() != null) {
 					comparison = value1.getPlace().compareTo(value2.getPlace());
 				}
 				return comparison;

@@ -135,7 +135,6 @@ public class Software extends ResearchOutputsData1 {
 	 * 
 	 * @return The software version
 	 */
-	@DSpaceField("dc.relation.isversionof")
 	public String getChrEdition() {
 		return chrEdition;
 	}
@@ -148,13 +147,19 @@ public class Software extends ResearchOutputsData1 {
 	public void setChrEdition(String chrEdition) {
 		this.chrEdition = chrEdition;
 	}
+
+	@Transient
+	@DSpaceField("dc.relation.isversionof")
+	public String getEditionText() {
+		if (chrEdition != null && chrEdition.trim().length() > 0) {
+			return chrEdition + " Edition";
+		}
+		return null;
+	}
 	
 	@Transient
 	@Override
 	public List<String> getExternalCategories() {
 		return EXT_CATEGORIES;
-//		List<String> categories = new ArrayList<String>();
-//		categories.add("RL104");
-//		return categories;
 	}
 }

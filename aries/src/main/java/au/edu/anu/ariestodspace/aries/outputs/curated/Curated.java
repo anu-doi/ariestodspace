@@ -1,8 +1,13 @@
 package au.edu.anu.ariestodspace.aries.outputs.curated;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Transient;
+
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
 
 import au.edu.anu.ariestodspace.aries.ResearchOutputsData1;
 import au.edu.anu.ariestodspace.aries.ResearchOutputsJournalsPublishers;
@@ -15,6 +20,7 @@ import au.edu.anu.ariestodspace.aries.annotation.DSpaceFieldObject;
  * @author Genevieve Turner
  *
  */
+@Entity
 public class Curated extends ResearchOutputsData1 {
 	private String chrExtentOfWork;
 	private String chrPublicationPlace;
@@ -38,6 +44,7 @@ public class Curated extends ResearchOutputsData1 {
 	 */
 	@DSpaceField("dc.format.extent")
 	public String getChrExtentOfWork() {
+		System.out.println("In curated extent of work");
 		return chrExtentOfWork;
 	}
 
@@ -55,7 +62,7 @@ public class Curated extends ResearchOutputsData1 {
 	 * 
 	 * @return  The publication location
 	 */
-	@DSpaceField("local.biliographicCitation.placeofpublication")
+	@DSpaceField("local.bibliographicCitation.placeofpublication")
 	public String getChrPublicationPlace() {
 		return chrPublicationPlace;
 	}
@@ -76,6 +83,7 @@ public class Curated extends ResearchOutputsData1 {
 	@DSpaceFieldObject
 	@ManyToOne
 	@JoinColumn(name="intPublisherID")
+	@NotFound(action=NotFoundAction.IGNORE)
 	public ResearchOutputsJournalsPublishers getPublisher() {
 		return publisher;
 	}

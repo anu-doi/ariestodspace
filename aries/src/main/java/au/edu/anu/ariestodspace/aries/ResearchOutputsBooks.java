@@ -10,6 +10,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
+
 import au.edu.anu.ariestodspace.aries.annotation.DSpaceField;
 import au.edu.anu.ariestodspace.aries.annotation.DSpaceFieldObject;
 import au.edu.anu.ariestodspace.aries.util.Util;
@@ -95,10 +98,6 @@ public class ResearchOutputsBooks {
 	@Transient
 	@DSpaceField("dc.contributor.editor")
 	public List<String> getEditors() {
-//		LOGGER.info("Editors: {}", chrEditor);
-//		List<String> editors = Util.parseEditors(chrEditor);
-//		LOGGER.info("Editor list: {}", editors);
-//		return editors;
 		return Util.parseEditors(chrEditor);
 	}
 
@@ -116,7 +115,6 @@ public class ResearchOutputsBooks {
 	 * 
 	 * @return The edition
 	 */
-	@DSpaceField("dc.relation.isversionof")
 	public String getChrEdition() {
 		return chrEdition;
 	}
@@ -128,6 +126,15 @@ public class ResearchOutputsBooks {
 	 */
 	public void setChrEdition(String chrEdition) {
 		this.chrEdition = chrEdition;
+	}
+	
+	@Transient
+	@DSpaceField("dc.relation.isversionof")
+	public String getEditionText() {
+		if (chrEdition != null && chrEdition.trim().length() > 0) {
+			return chrEdition + " Edition";
+		}
+		return null;
 	}
 
 	/**
@@ -247,6 +254,7 @@ public class ResearchOutputsBooks {
 	@DSpaceFieldObject
 	@ManyToOne
 	@JoinColumn(name="intPublisherID")
+	@NotFound(action=NotFoundAction.IGNORE)
 	public ResearchOutputsJournalsPublishers getPublisher() {
 		return publisher;
 	}

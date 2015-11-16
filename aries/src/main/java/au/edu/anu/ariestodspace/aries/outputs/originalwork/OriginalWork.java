@@ -5,6 +5,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Transient;
 
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
+
 import au.edu.anu.ariestodspace.aries.ResearchOutputsData1;
 import au.edu.anu.ariestodspace.aries.ResearchOutputsJournalsPublishers;
 import au.edu.anu.ariestodspace.aries.annotation.DSpaceField;
@@ -78,6 +81,7 @@ public class OriginalWork extends ResearchOutputsData1 {
 	@DSpaceFieldObject
 	@ManyToOne
 	@JoinColumn(name="intPublisherID")
+	@NotFound(action=NotFoundAction.IGNORE)
 	public ResearchOutputsJournalsPublishers getPublisher() {
 		return publisher;
 	}
