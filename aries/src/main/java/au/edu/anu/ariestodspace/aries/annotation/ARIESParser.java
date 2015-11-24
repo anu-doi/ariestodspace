@@ -1,14 +1,7 @@
 package au.edu.anu.ariestodspace.aries.annotation;
 
-import java.io.UnsupportedEncodingException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.nio.ByteBuffer;
-import java.nio.CharBuffer;
-import java.nio.charset.Charset;
-import java.nio.charset.CharsetDecoder;
-import java.nio.charset.CoderResult;
-import java.nio.charset.CodingErrorAction;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -18,6 +11,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,6 +28,9 @@ import au.edu.anu.ariestodspace.aries.ResearchOutputsDataAuthors;
  */
 public class ARIESParser {
 	Logger LOGGER = LoggerFactory.getLogger(this.getClass());
+	
+
+	private static final Pattern p = Pattern.compile("-|,|\\.|n/a|na|unknown|tba|other \\(for era\\)");
 	
 	/**
 	 * Get the map of DSpace values
@@ -54,7 +52,7 @@ public class ARIESParser {
 		});
 		
 		Map<String, List<String>> dspaceValues = new HashMap<String, List<String>>();
-		addValues(data1, dspaceValues);
+		addValues(data1, dspaceValues, data1);
 		
 		return dspaceValues;
 	}
@@ -67,7 +65,7 @@ public class ARIESParser {
 	 * @throws InvocationTargetException
 	 * @throws IllegalAccessException
 	 */
-	private void addValues(Object obj, Map<String, List<String>> dspaceValues) throws InvocationTargetException
+	private void addValues(Object obj, Map<String, List<String>> dspaceValues, Object baseObject) throws InvocationTargetException
 			, IllegalAccessException {
 		Class<?> clazz = obj.getClass();
 		Method[] methods = clazz.getMethods();
@@ -75,7 +73,19 @@ public class ARIESParser {
 		for (Method method : methods) {
 			if (method.isAnnotationPresent(DSpaceField.class)) {
 				DSpaceField field = method.getAnnotation(DSpaceField.class);
-//				LOGGER.info("Method name: {}, Field value: {}", method.getName(), field.value());
+				Class<?>[] limitClasses = field.limitToClasses();
+				boolean proceed = true;
+				if (limitClasses.length > 0) {
+					proceed = false;
+				}
+				for (int i = 0; !proceed && i < limitClasses.length; i++) {
+					if (baseObject.getClass().equals(limitClasses[i])) {
+						proceed = true;
+					}
+				}
+				if (!proceed) {
+					continue;
+				}
 				Object getValue = method.invoke(obj);
 				if (getValue instanceof Collection) {
 					Collection<?> collection = (Collection<?>) getValue;
@@ -94,12 +104,12 @@ public class ARIESParser {
 				if (getValue instanceof Collection) {
 					Collection<?> collection = (Collection<?>) getValue;
 					for (Object o : collection) {
-						addValues(o, dspaceValues);
+						addValues(o, dspaceValues, baseObject);
 					}
 				}
 				else {
 					if (getValue != null) {
-						addValues(getValue, dspaceValues);
+						addValues(getValue, dspaceValues, baseObject);
 					}
 				}
 			}
@@ -115,7 +125,8 @@ public class ARIESParser {
 	 */
 	private void addSingleValue(String valueToAdd, String fieldName, Map<String, List<String>> valueMap) {
 //		LOGGER.info("Add value '{}' to '{}'", valueToAdd, fieldName);
-		if (valueToAdd != null && !"".equals(valueToAdd.trim()) && !valueToAdd.toLowerCase().trim().matches("-|,|\\.|n/a|na|unknown|tba")) {
+//		if (valueToAdd != null && !"".equals(valueToAdd.trim()) && !valueToAdd.toLowerCase().trim().matches("-|,|\\.|n/a|na|unknown|tba")) {
+		if (valueToAdd != null && !"".equals(valueToAdd.trim()) && !matchesRemoveValues(valueToAdd.toLowerCase().trim())) {
 //			LOGGER.info("Add value");
 			if (valueMap.containsKey(fieldName)) {
 				valueMap.get(fieldName).add(valueToAdd);
@@ -137,26 +148,7 @@ public class ARIESParser {
 	private String getStringValue(Object value) {
 		if (value instanceof String) {
 			String returnValue = (String) value;
-//			LOGGER.info("Value: {}", value);
-//			// test if the string can be decoded by cp1252
-//			boolean cp1252decode = false;
-////			boolean cp1252decode = decodeToCp1252(returnValue);
-//			LOGGER.info("Can decode? {}", cp1252decode);
-//			try {
-//				// if the string can be decoded by cp1252 then do so
-//				if (cp1252decode) {
-//					byte[] bytes = returnValue.getBytes("cp1252");
-//					returnValue = new String(bytes, StandardCharsets.UTF_8);
-//				}
-//				if (!returnValue.equals(value)) {
-//					LOGGER.debug("Return value Before: {}, After: {}", value, returnValue);
-//				}
-//			}
-//			catch (UnsupportedEncodingException e) {
-//				LOGGER.error("Error with encoding");
-//			}
 			// Unescape the html encoding
-			
 			returnValue = HtmlEscape.unescapeHtml(returnValue);
 			return returnValue;
 		}
@@ -168,29 +160,8 @@ public class ARIESParser {
 		return null;
 	}
 	
-	/**
-	 * Checdk if the provided string can be decoded by cp1252
-	 * 
-	 * @param value The value
-	 * @return true if the string can be decoded by cp1252 otherwise false
-	 */
-	private boolean decodeToCp1252(String value) {
-		CharsetDecoder decoder = Charset.forName("utf8").newDecoder();
-		decoder.onMalformedInput(CodingErrorAction.REPORT);
-		decoder.onUnmappableCharacter(CodingErrorAction.REPORT);
-		boolean canDecode = false;
-		try {
-			CharBuffer out = CharBuffer.wrap(new char[value.length()]);
-			CoderResult result = decoder.decode(ByteBuffer.wrap(value.getBytes("cp1252")), out, true);
-			if (!(result.isError() || result.isMalformed())) {
-				canDecode = true;
-			}
-			decoder.flush(out);
-		}
-		catch (UnsupportedEncodingException e) {
-			LOGGER.info("Get bytes unsupported coding exception", e);
-		}
-		return canDecode;
+	private boolean matchesRemoveValues(String value) {
+		Matcher m = p.matcher(value);
+		return m.matches();
 	}
-	
 }

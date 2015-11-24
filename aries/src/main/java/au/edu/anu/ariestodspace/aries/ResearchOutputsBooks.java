@@ -15,6 +15,8 @@ import org.hibernate.annotations.NotFoundAction;
 
 import au.edu.anu.ariestodspace.aries.annotation.DSpaceField;
 import au.edu.anu.ariestodspace.aries.annotation.DSpaceFieldObject;
+import au.edu.anu.ariestodspace.aries.outputs.BookChapter;
+import au.edu.anu.ariestodspace.aries.outputs.ReferenceWorks;
 import au.edu.anu.ariestodspace.aries.util.Util;
 
 /**
@@ -70,7 +72,7 @@ public class ResearchOutputsBooks {
 	 * 
 	 * @return The book name
 	 */
-	@DSpaceField("dc.relation.ispartof")
+	@DSpaceField(value="dc.relation.ispartof", limitToClasses= {BookChapter.class, ReferenceWorks.class})
 	@Column(name="chrBookName")
 	public String getChrBookName() {
 		return chrBookName;

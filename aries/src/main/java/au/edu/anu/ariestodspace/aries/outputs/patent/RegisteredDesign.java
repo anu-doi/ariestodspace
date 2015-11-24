@@ -16,10 +16,15 @@ import au.edu.anu.ariestodspace.aries.annotation.DSpaceField;
  */
 @Entity
 @DiscriminatorValue("05131")
-public class RegisteredDesign extends ResearchOutputsData1 {
+public class RegisteredDesign extends Invention {
 	private String chrDesignPatentNo;
 	private String chrPatentRegistrationBody;
 	private Date dateRegistrationDate;
+
+	@Override
+	public String getChrReportingYear() {
+		return super.getChrReportingYear();
+	}
 	
 	/**
 	 * Get the registered design number

@@ -39,7 +39,7 @@ public class LivePerformance extends ResearchOutputsData1 {
 	@Transient
 	@DSpaceField("dc.type")
 	public String getType() {
-		return "Live performance";
+		return "Creative work";
 	}
 	
 	@Override

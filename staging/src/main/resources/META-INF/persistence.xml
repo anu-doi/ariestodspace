@@ -104,7 +104,7 @@
 		<class>au.edu.anu.ariestodspace.aries.outputs.patent.GrantedPatent</class>
 		<class>au.edu.anu.ariestodspace.aries.outputs.patent.HERDC2001Patent</class>
 		<class>au.edu.anu.ariestodspace.aries.outputs.patent.Invention</class>
-		<class>au.edu.anu.ariestodspace.aries.outputs.patent.NHMRCGuildeline</class>
+		<class>au.edu.anu.ariestodspace.aries.outputs.patent.NHMRCGuideline</class>
 		<class>au.edu.anu.ariestodspace.aries.outputs.patent.PlantBreedersRights</class>
 		<class>au.edu.anu.ariestodspace.aries.outputs.patent.ProvisionalPatent</class>
 		<class>au.edu.anu.ariestodspace.aries.outputs.patent.RegisteredDesign</class>

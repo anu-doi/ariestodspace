@@ -176,7 +176,7 @@ public class ARIESParserTest {
 		}
 		InternalAuthor author2 = (InternalAuthor) secondAuthor;
 		assertEquals("Unexpected author name","Turner, Genevieve",author2.getName());
-		assertEquals("Unexpected affiliation","Turner, Genevieve, eResearch Support and Development, Enterprise Services, Information Technology Services, The Australian National University",author2.getAffiliation());
+		assertEquals("Unexpected affiliation","Turner, Genevieve, Information Technology Services, The Australian National University",author2.getAffiliation());
 		assertEquals("Unexpected university id","u1111111",author2.getUid());
 	}
 	
@@ -192,7 +192,7 @@ public class ARIESParserTest {
 		try {
 			Map<String, List<String>> ariesMap = parser.getDSpaceValues(data1);
 			assertNotNull("ARIES Map unexpectedly null",ariesMap);
-			assertEquals("Unexpected number of elements in the map", 25, ariesMap.size());
+			assertEquals("Unexpected number of elements in the map", 26, ariesMap.size());
 			List<String> subjects = ariesMap.get("dc.subject");
 			assertNotNull("No subjects found", subjects);
 			assertEquals("Unexpected number of subjects", 1, subjects.size());
@@ -294,9 +294,9 @@ public class ARIESParserTest {
 			assertNotNull("No affiliations found", affiliations);
 			assertEquals("Unexpected number of affiliations", 4, affiliations.size());
 			assertEquals("Unexpected affiliation value", "Body, Some, University of New South Wales", affiliations.get(0));
-			assertEquals("Unexpected affiliation value","Turner, Genevieve, eResearch Support and Development, Enterprise Services, Information Technology Services, The Australian National University",affiliations.get(1));
+			assertEquals("Unexpected affiliation value","Turner, Genevieve, Information Technology Services, The Australian National University",affiliations.get(1));
 			assertEquals("Unexpected affiliation value","Person, Random, Sydney University",affiliations.get(2));
-			assertEquals("Unexpected affiliation value","Khanna, Rahul, eResearch Support and Development, Enterprise Services, Information Technology Services, The Australian National University",affiliations.get(3));
+			assertEquals("Unexpected affiliation value","Khanna, Rahul, Information Technology Services, The Australian National University",affiliations.get(3));
 			
 			List<String> ariesPublications = ariesMap.get("local.identifier.ariespublication");
 			assertNotNull("No aries publications found", ariesPublications);

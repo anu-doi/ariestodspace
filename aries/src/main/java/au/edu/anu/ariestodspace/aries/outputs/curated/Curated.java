@@ -1,6 +1,5 @@
 package au.edu.anu.ariestodspace.aries.outputs.curated;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -44,7 +43,6 @@ public class Curated extends ResearchOutputsData1 {
 	 */
 	@DSpaceField("dc.format.extent")
 	public String getChrExtentOfWork() {
-		System.out.println("In curated extent of work");
 		return chrExtentOfWork;
 	}
 

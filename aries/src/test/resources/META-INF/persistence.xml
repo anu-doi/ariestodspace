@@ -58,7 +58,7 @@
 		<class>au.edu.anu.ariestodspace.aries.outputs.patent.GrantedPatent</class>
 		<class>au.edu.anu.ariestodspace.aries.outputs.patent.HERDC2001Patent</class>
 		<class>au.edu.anu.ariestodspace.aries.outputs.patent.Invention</class>
-		<class>au.edu.anu.ariestodspace.aries.outputs.patent.NHMRCGuildeline</class>
+		<class>au.edu.anu.ariestodspace.aries.outputs.patent.NHMRCGuideline</class>
 		<class>au.edu.anu.ariestodspace.aries.outputs.patent.PlantBreedersRights</class>
 		<class>au.edu.anu.ariestodspace.aries.outputs.patent.ProvisionalPatent</class>
 		<class>au.edu.anu.ariestodspace.aries.outputs.patent.RegisteredDesign</class>
@@ -81,18 +81,6 @@
 		<class>au.edu.anu.ariestodspace.aries.documents.OtherDocument</class>
 		
 		<properties>
-			<property name="hibernate.connection.driver_class" value="net.sourceforge.jtds.jdbc.Driver" />
-			<property name="hibernate.connection.url" value="jdbc:jtds:sqlserver://UDSSQL99/dbsAries_acep;instance=GS01;domain=uds.anu.edu.au;sendStringParametersAsUnicode=false;charset=utf8" />
-			<property name="show_sql" value="true" />
-			<property name="hibernate.dialect" value="org.hibernate.dialect.SQLServerDialect" />
-			<property name="hibernate.hbm2ddl.auto" value="validate" />
-			<!-- <property name="hibernate.c3p0.min_size" value="1" />
-			<property name="hibernate.c3p0.max_size" value="20" />
-			<property name="hibernate.c3p0.timeout" value="1800" />
-			<property name="hibernate.c3p0.max_statements" value="2000" /> -->
-		</properties>
-		
-		<!-- <properties>
 			<property name="hibernate.connection.driver_class" value="org.hsqldb.jdbcDriver" />
 			<property name="hibernate.connection.url" value="jdbc:hsqldb:mem:ariesdb;sql.syntax_mys=true" />
 			<property name="hibernate.connection.user" value="sa" />
@@ -102,6 +90,6 @@
 			<property name="hibernate.connection.shutdown" value="true" />
 			<property name="hibernate.hbm2ddl.auto" value="create-drop" />
 			<property name="hibernate.hbm2ddl.import_files" value="/sql/aries-import.sql" />
-		</properties> -->
+		</properties>
 	</persistence-unit>
 </persistence>

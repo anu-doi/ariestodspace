@@ -18,6 +18,11 @@ import au.edu.anu.ariestodspace.aries.annotation.DSpaceField;
 public class Website extends Recorded {
 	private Date dateOfRecording;
 
+	@Override
+	public String getChrReportingYear() {
+		return super.getChrReportingYear();
+	}
+	
 	/**
 	 * Get the date the website was released
 	 * 

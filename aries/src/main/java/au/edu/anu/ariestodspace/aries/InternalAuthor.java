@@ -82,10 +82,10 @@ public class InternalAuthor extends ResearchOutputsDataAuthors {
 		}
 		sb.append(getName());
 		sb.append(", ");
-		sb.append(department.getChrTier3Name());
-		sb.append(", ");
-		sb.append(department.getSchool().getChrTier2Name());
-		sb.append(", ");
+//		sb.append(department.getChrTier3Name());
+//		sb.append(", ");
+//		sb.append(department.getSchool().getChrTier2Name());
+//		sb.append(", ");
 		sb.append(department.getCollege().getChrCollegeName());
 		sb.append(", ");
 		sb.append(department.getInstitution().getChrTier1Name());

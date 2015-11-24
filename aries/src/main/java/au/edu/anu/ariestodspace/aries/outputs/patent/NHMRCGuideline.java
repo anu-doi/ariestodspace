@@ -18,6 +18,11 @@ import au.edu.anu.ariestodspace.aries.annotation.DSpaceField;
 public class NHMRCGuideline extends Invention {
 	private Date chrLaunchDate;
 
+	@Override
+	public String getChrReportingYear() {
+		return super.getChrReportingYear();
+	}
+	
 	/**
 	 * Get the date published
 	 * 
