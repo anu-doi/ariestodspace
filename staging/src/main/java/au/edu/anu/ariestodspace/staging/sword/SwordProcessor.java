@@ -407,20 +407,20 @@ public class SwordProcessor {
 	private InputStream createInputStream(Path file) throws IOException {
 		long totalBytes = Files.size(file);
 		ProgressInputStream fileStream = new ProgressInputStream(Files.newInputStream(file), totalBytes);
-		fileStream.addPropertyChangeListener(new PropertyChangeListener() {
-			public void propertyChange(PropertyChangeEvent evt) {
-				if (evt.getPropertyName().equals("percentComplete")) {
-					int oldValue = ((Integer) evt.getOldValue()).intValue();
-					int newValue = ((Integer) evt.getNewValue()).intValue();
-					if (newValue > oldValue) {
-						System.out.print(newValue + "%\r");
-						if (newValue == 100) {
-							System.out.println();
-						}
-					}
-				}
-			}
-		});
+//		fileStream.addPropertyChangeListener(new PropertyChangeListener() {
+//			public void propertyChange(PropertyChangeEvent evt) {
+//				if (evt.getPropertyName().equals("percentComplete")) {
+//					int oldValue = ((Integer) evt.getOldValue()).intValue();
+//					int newValue = ((Integer) evt.getNewValue()).intValue();
+//					if (newValue > oldValue) {
+//						System.out.print(newValue + "%\r");
+//						if (newValue == 100) {
+//							System.out.println();
+//						}
+//					}
+//				}
+//			}
+//		});
 		return fileStream;
 	}
 }

@@ -47,6 +47,7 @@ import au.edu.anu.ariestodspace.staging.data.DuplicateRecords;
 import au.edu.anu.ariestodspace.staging.data.IdentifierMapping;
 import au.edu.anu.ariestodspace.staging.data.LastRun;
 import au.edu.anu.ariestodspace.staging.data.StagingPersistenceManager;
+import au.edu.anu.ariestodspace.staging.exception.StagingException;
 import au.edu.anu.ariestodspace.staging.sword.SwordProcessor;
 import au.edu.anu.ariestodspace.staging.sword.SwordServerInfo;
 import au.edu.anu.ariestodspace.staging.sword.data.BitstreamInfo;
@@ -306,6 +307,9 @@ public class MigrateDataOption extends StagingSubCommand {
 					processSendRecord(dataProvider, data1);
 				}
 			}
+			catch (StagingException e) {
+				LOGGER.error("Exception retrieving data", e);
+			}
 			catch (IllegalAccessException | InvocationTargetException | IOException e) {
 				LOGGER.error("Error parsing aries data", e);
 			}
@@ -339,7 +343,8 @@ public class MigrateDataOption extends StagingSubCommand {
 	 * @throws InvocationTargetException
 	 * @throws IOException
 	 */
-	private void processSendRecord(SwordRequestDataProvider dataProvider, ResearchOutputsData1 data1) throws IllegalAccessException, InvocationTargetException, IOException {
+	private void processSendRecord(SwordRequestDataProvider dataProvider, ResearchOutputsData1 data1) 
+			throws IllegalAccessException, InvocationTargetException, IOException, StagingException {
 		ARIESParser parser = new ARIESParser();
 		Set<String> duplicates = getDuplicateAriesIdentifiers(data1.getChrOutput6Code());
 		boolean sendToDSpace = false;
@@ -538,7 +543,7 @@ public class MigrateDataOption extends StagingSubCommand {
 	 * @return The item
 	 */
 	@SuppressWarnings("unchecked")
-	private Item getItem(ResearchOutputsData1 data1, Set<String> duplicates) {
+	private Item getItem(ResearchOutputsData1 data1, Set<String> duplicates) throws StagingException {
 		EntityManager stagingEm = StagingPersistenceManager.getInstance().getEntityManagerFactory().createEntityManager();
 		
 		List<IdentifierMapping> mappings = null;
@@ -557,12 +562,16 @@ public class MigrateDataOption extends StagingSubCommand {
 		}
 		if (mappings != null && mappings.size() > 0) {
 			EntityManager dspaceEm = DSpacePersistenceManager.getInstance().getEntityManagerFactory().createEntityManager();
-
 			try {
 				Integer itemId = mappings.get(0).getItemId();
 				Item item = dspaceEm.find(Item.class, itemId);
-				item.getMetadataValues().size();
-				return item;
+				if (item != null) {
+					item.getMetadataValues().size();
+					return item;
+				}
+				else {
+					throw new StagingException("Unable to find item with the id '"+itemId+"' for the aries record '"+data1.getChrOutput6Code()+"'");
+				}
 			}
 			finally {
 				dspaceEm.close();
@@ -680,7 +689,7 @@ public class MigrateDataOption extends StagingSubCommand {
 		for (ResearchOutputsDataAuthors author : authors) {
 			if (author instanceof InternalAuthor) {
 				String uid = ((InternalAuthor) author).getUser().getChrStaffNumber();
-				uidsToCheck.add(uid);
+				uidsToCheck.add(uid.toLowerCase());
 			}
 		}
 		
