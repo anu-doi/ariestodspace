@@ -10,6 +10,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Transient;
 
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
+
 import au.edu.anu.ariestodspace.aries.ResearchOutputsBooks;
 import au.edu.anu.ariestodspace.aries.ResearchOutputsData1;
 import au.edu.anu.ariestodspace.aries.annotation.DSpaceField;
@@ -96,6 +99,7 @@ public class ReferenceWorks extends ResearchOutputsData1 {
 	@DSpaceFieldObject
 	@ManyToOne
 	@JoinColumn(name="intBookCode")
+	@NotFound(action=NotFoundAction.IGNORE)
 	public ResearchOutputsBooks getBook() {
 		return book;
 	}

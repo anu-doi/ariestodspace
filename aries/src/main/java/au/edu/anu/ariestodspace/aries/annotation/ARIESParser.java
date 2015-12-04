@@ -30,7 +30,7 @@ public class ARIESParser {
 	Logger LOGGER = LoggerFactory.getLogger(this.getClass());
 	
 
-	private static final Pattern p = Pattern.compile("-|,|\\.|n/a|na|unknown|tba|other \\(for era\\)");
+	private static final Pattern p = Pattern.compile("-|,|\\.|n/a|na|unknown|tba|other \\(for era\\)|scopus journal not found");
 	
 	/**
 	 * Get the map of DSpace values

@@ -11,6 +11,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Transient;
 
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
+
 import au.edu.anu.ariestodspace.aries.ResearchOutputsBooks;
 import au.edu.anu.ariestodspace.aries.ResearchOutputsData1;
 import au.edu.anu.ariestodspace.aries.annotation.DSpaceField;
@@ -117,6 +120,7 @@ public class Book extends ResearchOutputsData1 {
 	@DSpaceFieldObject
 	@ManyToOne
 	@JoinColumn(name="intBookCode")
+	@NotFound(action=NotFoundAction.IGNORE)
 	public ResearchOutputsBooks getBook() {
 		return book;
 	}
@@ -134,10 +138,5 @@ public class Book extends ResearchOutputsData1 {
 	@Override
 	public List<String> getExternalCategories() {
 		return EXT_CATEGORIES;
-//		List<String> categories = new ArrayList<String>();
-//		categories.add("RL87");
-//		categories.add("RL91");
-//		categories.add("RL93");
-//		return categories;
 	}
 }
