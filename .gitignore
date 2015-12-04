@@ -3,3 +3,8 @@ target/
 .settings/
 .project
 .classpath
+
+staging/src/sql/insert_people.sql
+
+local.properties
+test.properties
