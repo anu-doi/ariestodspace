@@ -790,7 +790,20 @@ public class MigrateDataOption extends StagingSubCommand {
 		
 		Matcher fileExtMatcher = null;
 		Matcher nameMatcher = null;
-		for (ResearchOutputsDataDocuments doc : data1.getDocuments()) {
+		List<ResearchOutputsDataDocuments> documents = data1.getDocuments();
+		Collections.sort(documents, new Comparator<ResearchOutputsDataDocuments>() {
+
+			@Override
+			public int compare(ResearchOutputsDataDocuments doc1,
+					ResearchOutputsDataDocuments doc2) {
+				return doc1.getIntOutputDocumentCounter().compareTo(doc2.getIntOutputDocumentCounter());
+			}
+			
+		});
+		
+		int counter = 1;
+		
+		for (ResearchOutputsDataDocuments doc : documents) {
 			if (VALID_DOCUMENT_TYPES.contains(doc.getIntDocumentType())) {
 				fileExtMatcher = FILE_EXT_PATTERN.matcher(doc.getChrFileExtention());
 				if (fileExtMatcher.matches()) {
@@ -799,7 +812,9 @@ public class MigrateDataOption extends StagingSubCommand {
 						String filename = ARIES_DIRECTORY + doc.getChrOutputFileName();
 						try {
 							LOGGER.info("File name: {}", filename);
-							BitstreamInfo bitstream = new BitstreamInfo(filename);
+							String depositFileName = generateFileName(data1, counter, doc.getChrFileExtention());
+							counter++;
+							BitstreamInfo bitstream = new BitstreamInfo(filename, depositFileName);
 							bitstreams.add(bitstream);
 						}
 						catch (FileNotFoundException e) {
@@ -814,5 +829,31 @@ public class MigrateDataOption extends StagingSubCommand {
 		}
 		
 		return null;
+	}
+	
+	private String generateFileName(ResearchOutputsData1 data1, int counter, String fileExtension) {
+		List<ResearchOutputsDataAuthors> authors = data1.getAuthors();
+		Collections.sort(authors, new Comparator<ResearchOutputsDataAuthors>() {
+			@Override
+			public int compare(ResearchOutputsDataAuthors author1,
+					ResearchOutputsDataAuthors author2) {
+				return author1.getChrOrder().compareTo(author2.getChrOrder());
+			}
+			
+		});
+		
+		String firstAuthor = authors.get(0).getName().substring(0, authors.get(0).getName().indexOf(','));;
+		String title = data1.getChrPublicationTitle();
+		if (title.length() >= 31) {
+			title = title.substring(0, 31);
+			title = title.substring(0, title.lastIndexOf(' '));
+		}
+		title = title.replaceAll(" ", "_");
+		String year = data1.getChrReportingYear();
+		
+		String filename = String.format("%02d_%s_%s_%s.%s", counter, firstAuthor, title, year, fileExtension);
+		LOGGER.info("File name to use in digital collections: {}", filename);
+		
+		return filename;
 	}
 }

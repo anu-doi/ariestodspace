@@ -1,10 +1,7 @@
 package au.edu.anu.ariestodspace.staging.sword;
 
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URLEncoder;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.text.MessageFormat;
@@ -279,11 +276,9 @@ public class SwordProcessor {
 					for (int i = 0; i < maxRetries && (bsDepositReceipt == null || bsDepositReceipt.getStatusCode() != 201); i++){
 						// create bitstream deposit object
 						Deposit bsDeposit = new Deposit();
-						String depositFilename = URLEncoder.encode(bitstreamInfo.getFilename(), "UTF-8");
+						String depositFilename = bitstreamInfo.getFileNameToDeposit();
 						log.info("Deposit file name: {}", depositFilename);
 						bsDeposit.setFilename(depositFilename);
-	//					bsDeposit.setFilename(bitstreamInfo.getFilename());
-	//					bsDeposit.setContentLength(bitstreamInfo.getSize());
 						bsDeposit.setInProgress(true);
 						bsDeposit.setMd5(md5);
 						String mimeType = Files.probeContentType(bitstreamInfo.getFile());
