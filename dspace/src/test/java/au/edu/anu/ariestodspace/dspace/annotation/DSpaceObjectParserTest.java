@@ -2,14 +2,12 @@ package au.edu.anu.ariestodspace.dspace.annotation;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
 
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
 
 import org.junit.AfterClass;
 import org.junit.Ignore;
@@ -26,33 +24,36 @@ import au.edu.anu.ariestodspace.dspace.data.ItemHandle;
 public class DSpaceObjectParserTest {
 	private static Logger LOGGER = LoggerFactory.getLogger(DSpaceObjectParserTest.class);
 	
-	private static EntityManagerFactory emf;
+//	private static EntityManagerFactory emf;
 	
 	@AfterClass
 	public static void after() {
 		DSpacePersistenceManager.getInstance().closeEntityManagerFactory();
 	}
 	
-//	@Ignore
+	@Ignore
 	@Test
 	public void test() {
 		EntityManager em = DSpacePersistenceManager.getInstance().getEntityManagerFactory().createEntityManager();
 		
-		Item item = em.find(Item.class, 1);
-		assertNotNull("Item is null", item);
-		assertNotNull("Item has no metadata values", item.getMetadataValues());
-		
-		assertTrue("Size of metadata values is 0", item.getMetadataValues().size() > 0);
-		
-		if (item != null && item.getMetadataValues() != null) {
-			item.getMetadataValues().size();
-		}
+//		em.createQuery("");
+		Item item = null;
 
-		em.close();
-		assertNotNull("Owning collection is null",item.getOwningCollection());
-		
-		DSpaceObjectParser parser = new DSpaceObjectParser();
 		try {
+			item = em.find(Item.class, 1);
+			assertNotNull("Item is null", item);
+			assertNotNull("Item has no metadata values", item.getMetadataValues());
+			
+			assertEquals("Unexpected number of metadata values", 30, item.getMetadataValues().size());
+		}
+		finally {
+			em.close();
+		}
+		assertNotNull("Item unexpectedly null", item);
+		
+		assertNotNull("Owning collection is null",item.getOwningCollection());
+		try {
+			DSpaceObjectParser parser = new DSpaceObjectParser();
 			DSpaceObject dso = parser.getDSpaceObject(item);
 			assertNotNull("No DSpaceObject created", dso);
 			
@@ -126,10 +127,10 @@ public class DSpaceObjectParserTest {
 		
 	}
 	
-	@Ignore
+//	@Ignore
 	@Test
 	public void getItemHandleTest() {
-		EntityManager em = emf.createEntityManager();
+		EntityManager em = DSpacePersistenceManager.getInstance().getEntityManagerFactory().createEntityManager();
 		
 		ItemHandle handle = em.find(ItemHandle.class, 2);
 
@@ -145,7 +146,7 @@ public class DSpaceObjectParserTest {
 	@Ignore
 	@Test
 	public void getCollectionHandleTest() {
-		EntityManager em = emf.createEntityManager();
+		EntityManager em = DSpacePersistenceManager.getInstance().getEntityManagerFactory().createEntityManager();
 		
 		CollectionHandle handle = em.find(CollectionHandle.class, 3);
 
@@ -156,6 +157,8 @@ public class DSpaceObjectParserTest {
 		assertEquals("Incorrect handle","1885/3",handle.getHandle());
 		assertNotNull("No item associated with handle", handle.getCollection());
 		assertEquals("Incorrect collection id",new Integer(1),handle.getCollection().getCollectionId());
-		assertEquals("Incorrect collection name","Open Access Digital Theses",handle.getCollection().getName());
+		
+		
+//		assertEquals("Incorrect collection name","Open Access Digital Theses",handle.getCollection().getName());
 	}
 }

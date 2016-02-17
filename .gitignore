@@ -6,6 +6,5 @@ target/
 
 staging/src/sql/insert_people.sql
 
-local.properties
-test.properties
-prod.properties
+/*.properties
+!/build.properties

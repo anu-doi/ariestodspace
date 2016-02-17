@@ -15,6 +15,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import au.edu.anu.ariestodspace.dspace.data.Item;
+import au.edu.anu.ariestodspace.dspace.data.ItemMetadataValue;
 import au.edu.anu.ariestodspace.dspace.data.MetadataValue;
 
 /**
@@ -42,7 +43,7 @@ public class DSpaceMapping {
 		Map<String, List<String>> values = new HashMap<String, List<String>>();
 		
 
-		List<MetadataValue> metadataValues = item.getMetadataValues();
+		List<ItemMetadataValue> metadataValues = item.getMetadataValues();
 		// Sort the values to ensure they are in the correct order
 		Collections.sort(metadataValues,new Comparator<MetadataValue>() {
 			@Override

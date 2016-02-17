@@ -5,6 +5,8 @@ import javax.persistence.DiscriminatorColumn;
 import javax.persistence.DiscriminatorType;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.DiscriminatorOptions;
@@ -17,6 +19,7 @@ import org.hibernate.annotations.DiscriminatorOptions;
  */
 @Entity
 @Table(name="handle")
+@Inheritance(strategy=InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name="resource_type_id",discriminatorType=DiscriminatorType.INTEGER)
 @DiscriminatorOptions(force=true)
 public class Handle {

@@ -18,6 +18,7 @@ import org.slf4j.LoggerFactory;
 import au.edu.anu.ariestodspace.dspace.DSpaceObject;
 import au.edu.anu.ariestodspace.dspace.data.Item;
 import au.edu.anu.ariestodspace.dspace.data.ItemHandle;
+import au.edu.anu.ariestodspace.dspace.data.ItemMetadataValue;
 import au.edu.anu.ariestodspace.dspace.data.MetadataValue;
 
 /**
@@ -39,12 +40,12 @@ public class DSpaceObjectParser {
 	 */
 	public DSpaceObject getDSpaceObject(Item item) throws NoSuchMethodException, InvocationTargetException
 			, IllegalAccessException {
-		List<MetadataValue> metadataValues = item.getMetadataValues();
+		List<ItemMetadataValue> metadataValues = item.getMetadataValues();
 		
 		// Order the metadata values so that they won't be reordered in the system...
-		Collections.sort(metadataValues,new Comparator<MetadataValue>() {
+		Collections.sort(metadataValues,new Comparator<ItemMetadataValue>() {
 			@Override
-			public int compare(MetadataValue value1, MetadataValue value2) {
+			public int compare(ItemMetadataValue value1, ItemMetadataValue value2) {
 				int comparison = value1.getMetadataFieldId().compareTo(value2.getMetadataFieldId());
 				if (comparison == 0) {
 					comparison = value1.getPlace().compareTo(value2.getPlace());

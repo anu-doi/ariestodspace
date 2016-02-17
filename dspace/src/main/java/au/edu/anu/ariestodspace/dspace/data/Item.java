@@ -31,7 +31,7 @@ public class Item {
 	private Date lastModified;
 	private Collection owningCollection;
 	private List<ItemHandle> handles;
-	private List<MetadataValue> metadataValues = new ArrayList<MetadataValue>();
+	private List<ItemMetadataValue> metadataValues = new ArrayList<ItemMetadataValue>();
 	
 	/**
 	 * Get the item id
@@ -174,7 +174,7 @@ public class Item {
 	 * @return The metadata values
 	 */
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "item")
-	public List<MetadataValue> getMetadataValues() {
+	public List<ItemMetadataValue> getMetadataValues() {
 		return metadataValues;
 	}
 
@@ -183,7 +183,7 @@ public class Item {
 	 * 
 	 * @param metadataValues The metadata values
 	 */
-	public void setMetadataValues(List<MetadataValue> metadataValues) {
+	public void setMetadataValues(List<ItemMetadataValue> metadataValues) {
 		this.metadataValues = metadataValues;
 	}
 }

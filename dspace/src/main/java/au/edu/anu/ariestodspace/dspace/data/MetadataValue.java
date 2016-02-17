@@ -1,12 +1,15 @@
 package au.edu.anu.ariestodspace.dspace.data;
 
 import javax.persistence.Column;
+import javax.persistence.DiscriminatorColumn;
+import javax.persistence.DiscriminatorType;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import javax.persistence.Table;
+
+import org.hibernate.annotations.DiscriminatorOptions;
 
 /**
  * Entity class for the 'metadatavalue' table in the DSpace database
@@ -15,9 +18,12 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="metadatavalue")
+@Inheritance(strategy=InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name="resource_type_id", discriminatorType=DiscriminatorType.INTEGER)
+@DiscriminatorOptions(force=true)
 public class MetadataValue {
 	private Integer id;
-	private Item item;
+	private Integer resourceId;
 	private Integer metadataFieldId;
 	private String textValue;
 	private String textLang;
@@ -52,24 +58,13 @@ public class MetadataValue {
 		this.id = id;
 	}
 
-	/**
-	 * Get the item
-	 * 
-	 * @return  The item
-	 */
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name ="item_id", nullable = false)
-	public Item getItem() {
-		return item;
+	@Column(name="resource_id")
+	public Integer getResourceId() {
+		return resourceId;
 	}
 
-	/**
-	 * Set the item
-	 * 
-	 * @param item The item
-	 */
-	public void setItem(Item item) {
-		this.item = item;
+	public void setResourceId(Integer resourceId) {
+		this.resourceId = resourceId;
 	}
 
 	/**

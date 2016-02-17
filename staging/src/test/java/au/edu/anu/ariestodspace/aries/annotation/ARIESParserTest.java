@@ -6,6 +6,7 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.fail;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -250,6 +251,7 @@ public class ARIESParserTest {
 			List<String> fields = ariesMap.get("local.identifier.absfor");
 			assertNotNull("No fields of research found", fields);
 			assertEquals("Unexpected number of fields of research", 3, fields.size());
+			Collections.sort(fields);
 			assertEquals("Unexpected field of research", "020102 - Astronomical and Space Instrumentation",fields.get(0));
 			assertEquals("Unexpected field of research", "030303 - Optical Properties of Materials",fields.get(1));
 			assertEquals("Unexpected field of research", "040106 - Cloud Physics",fields.get(2));

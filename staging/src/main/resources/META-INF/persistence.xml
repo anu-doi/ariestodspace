@@ -27,6 +27,8 @@
 		<provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
 		<class>au.edu.anu.ariestodspace.dspace.data.Item</class>
 		<class>au.edu.anu.ariestodspace.dspace.data.MetadataValue</class>
+		<class>au.edu.anu.ariestodspace.dspace.data.ItemMetadataValue</class>
+		<class>au.edu.anu.ariestodspace.dspace.data.CollectionMetadataValue</class>
 		<class>au.edu.anu.ariestodspace.dspace.data.Handle</class>
 		<class>au.edu.anu.ariestodspace.dspace.data.ItemHandle</class>
 		<class>au.edu.anu.ariestodspace.dspace.data.Collection</class>
