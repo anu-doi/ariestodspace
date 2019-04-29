@@ -264,7 +264,7 @@ public class DSpaceModifiedSinceOption extends StagingSubCommand {
 		arguments.add(firstDateStr);
 		arguments.add(lastDateStr);
 
-		String messageText = "Please find attached the items that have been created in Digital Collections.";
+		String messageText = "Please find attached the items that have been created in Open Research.";
 		try {
 			messageText = getMessageText("mail/newmail.txt", arguments.toArray(new String[0]));
 		}
@@ -277,7 +277,7 @@ public class DSpaceModifiedSinceOption extends StagingSubCommand {
 			for (String to : recipients) {
 				message.addRecipient(Message.RecipientType.TO, new InternetAddress(to));
 			}
-			message.setSubject("New items in Digital Collections list");
+			message.setSubject("New items in Open Research list");
 			
 			BodyPart messageBodyPart = new MimeBodyPart();
 			messageBodyPart.setText(messageText);
@@ -315,7 +315,7 @@ public class DSpaceModifiedSinceOption extends StagingSubCommand {
 		arguments.add(firstDateStr);
 		arguments.add(lastDateStr);
 		
-		String messageText = "No new records were created in Digital Collections";
+		String messageText = "No new records were created in Open Research";
 		try {
 			messageText = getMessageText("mail/nonewmail.txt", arguments.toArray(new String[0]));
 		}
@@ -329,7 +329,7 @@ public class DSpaceModifiedSinceOption extends StagingSubCommand {
 			for (String to : recipients) {
 				message.addRecipient(Message.RecipientType.TO, new InternetAddress(to));
 			}
-			message.setSubject("New items in Digital Collections list");
+			message.setSubject("New items in Open Research list");
 
 			message.setText(messageText);
 			

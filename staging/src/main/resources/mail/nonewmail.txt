@@ -1,7 +1,7 @@
 Dear Publishers,
 
-There were no new items created between {0} and {1} in Digital Collections.
+There were no new items created between {0} and {1} in Open Research.
 
 Regards,
 
-The Digital Collections Team
+The Open Research Team

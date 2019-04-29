@@ -418,10 +418,10 @@ public class MigrateDataOption extends StagingSubCommand {
 			}
 			
 			// Set an embargo date for newly created records
-			Set<String> embargoes = new LinkedHashSet<String>();
-			embargoes.add("2037-12-31");
-			String embargoKey = StagingProperties.getProperty("local.description.embargo", "fieldmappings");
-			mapToSend.put(embargoKey, embargoes);
+//			Set<String> embargoes = new LinkedHashSet<String>();
+//			embargoes.add("2037-12-31");
+//			String embargoKey = StagingProperties.getProperty("local.description.embargo", "fieldmappings");
+//			mapToSend.put(embargoKey, embargoes);
 			
 			// Add default email to send
 			String emailKey = StagingProperties.getProperty("local.contributor.authoremail", "fieldmappings");
@@ -846,13 +846,16 @@ public class MigrateDataOption extends StagingSubCommand {
 		String title = data1.getChrPublicationTitle();
 		if (title.length() >= 31) {
 			title = title.substring(0, 31);
-			title = title.substring(0, title.lastIndexOf(' '));
+			int lastSpace = title.lastIndexOf(' ');
+			if (lastSpace > 0) {
+				title = title.substring(0, lastSpace);
+			}
 		}
 		title = title.replaceAll(" ", "_");
 		String year = data1.getChrReportingYear();
 		
 		String filename = String.format("%02d_%s_%s_%s.%s", counter, firstAuthor, title, year, fileExtension);
-		LOGGER.info("File name to use in digital collections: {}", filename);
+		LOGGER.info("File name to use in Open Research: {}", filename);
 		
 		return filename;
 	}
