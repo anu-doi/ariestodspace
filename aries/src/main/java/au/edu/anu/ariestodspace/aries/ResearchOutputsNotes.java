@@ -17,10 +17,10 @@ import org.hibernate.annotations.DiscriminatorFormula;
  */
 @Entity
 @Table(name="Research_outputs_notes")
-@DiscriminatorFormula("case when intNotesType = 5 then 'CI' "
-		+ "when intNotesType = 6 then 'EL' "
+@DiscriminatorFormula("case when intNotesType = 2 then 'CI' "
+		+ "when intNotesType = 3 then 'EL' "
 		+ "when intNotesType = 4 then 'KW' "
-		+ "when intNotesType = 3 then 'GF' "
+		+ "when intNotesType = 5 then 'GF' "
 		+ "else 'OT' end")
 public class ResearchOutputsNotes {
 	private String chrOutputsNotesCode;
