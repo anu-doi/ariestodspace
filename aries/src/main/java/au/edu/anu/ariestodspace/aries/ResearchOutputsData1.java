@@ -345,7 +345,7 @@ public class ResearchOutputsData1 {
 	@Transient
 	@DSpaceField("local.identifier.doi")
 	public String getDOI() {
-		if (chrUrlArticle != null && chrUrlArticle.startsWith("http://dx.doi.org/")) {
+		if (chrUrlArticle != null && chrUrlArticle.matches("https?://(dx\\.|)doi\\.org.*")) {
 			return chrUrlArticle.substring(18);
 		}
 		return null;
@@ -359,7 +359,7 @@ public class ResearchOutputsData1 {
 	@Transient
 	@DSpaceField("dc.source.uri")
 	public String getSource() {
-		if (chrUrlArticle != null && !chrUrlArticle.startsWith("http://dx.doi.org/")) {
+		if (chrUrlArticle != null && !chrUrlArticle.matches("https?://(dx\\.|)doi\\.org.*")) {
 			return chrUrlArticle;
 		}
 		return null;
