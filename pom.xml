@@ -13,7 +13,7 @@
 	<properties>
 		  <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		  <slf4j.version>1.7.12</slf4j.version>
-		  <hibernate.version>4.3.10.Final</hibernate.version>
+		  <hibernate.version>5.4.24.Final</hibernate.version>
 		  <root.basedir>${basedir}</root.basedir>
 	</properties>
 	
